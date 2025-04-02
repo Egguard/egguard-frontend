@@ -1,5 +1,6 @@
 # Project Structure
 
+```
 📦 src/
 ├── 📂 assets/          # Static assets
 │   ├── fonts/         # Font files
@@ -63,3 +64,4 @@
 │
 ├── index.tsx           # React entry point
 └── main.tsx            # Main app bootstrap file
+```
