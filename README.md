@@ -1,54 +1,65 @@
-# React + TypeScript + Vite
+# Project Structure
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+📦 src/
+├── 📂 assets/          # Static assets
+│   ├── fonts/         # Font files
+│   ├── images/        # Image assets
+│   ├── icons/         # SVG or PNG icons
+│   └── styles/        # Global styles
+│
+├── 📂 components/      # Reusable UI components (Atomic Design structure)
+│   ├── 📂 atoms/      # Smallest UI elements (Button, Input, Icon, etc.)
+│   │
+│   ├── 📂 molecules/   # Groups of atoms
+│   │   └── Card.tsx
+│   │
+│   ├── 📂 organisms/   # Large, reusable components (Navbar, Sidebar, Footer, etc.)
+│   │   ├── Header.tsx
+│   │   └── Footer.tsx
+│   │
+│   └── 📂 templates/     # Page design or templates / Layouts
+│
+├── 📂 context/         # Global state using React Context API
+│   └── AuthContext.tsx
+│
+├── 📂 lib/             # Shared utilities, hooks, constants, and global state
+│   ├── 📂 constants/   # Global constants (URLs, config values, etc.)
+│   │   └── apiRoutes.ts # API endpoint URLs
+│   │
+│   ├── 📂 helpers/     # Utility functions (formatters, parsers, etc.)
+│   │   └── dateHelper.ts # Date formatting functions
+│   │
+│   ├── 📂 hooks/       # Reusable custom hooks
+│   │   ├── useAuth.ts  # Authentication state hook
+│   │   └── useTheme.ts # Theme state hook
+│   │
+│   ├── 📂 store/       # Global state management (Redux, Zustand, etc.)
+│   │   ├── authSlice.ts # Authentication Redux slice
+│   │   └── store.ts    # Redux/Zustand store
+│   │
+│   └── 📂 types/       # TypeScript types/interfaces
+│       ├── authTypes.ts # User authentication types
+│       ├── productTypes.ts # Product-related types
+│       └── index.d.ts  # Global types
+│
+├── 📂 pages/           # Page-level components (mapped to routes)
+│   ├── LoginPage.tsx   # Login page
+│   ├── ProfilePage.tsx # User profile page
+│   └── NotFoundPage.tsx # 404 page
+│
+├── 📂 routes/          # Application routing configuration
+│   └── routes.tsx      # Define all routes and layout usage
+│
+├── 📂 services/        # API calls and data fetching (React Query, Axios, etc.)
+│   ├── 📂 auth/        # Authentication-related API calls
+│   │   └── authService.ts # Login, logout, register functions
+│   │
+│   └── 📂 products/    # Product-related API calls
+│       ├── productService.ts # Fetching product data
+│       ├── queries.ts  # Queries with React Query
+│       └── mutations.ts # Mutations (POST, PUT, DELETE)
+│
+├── 📂 styles/          # Global styles (if Tailwind is customized)
+│
+├── index.tsx           # React entry point
+└── main.tsx            # Main app bootstrap file
