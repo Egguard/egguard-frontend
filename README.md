@@ -1,4 +1,33 @@
-# Project Structure
+# Egguard Frontend
+
+## Prerequisites
+Node.js (v18 or newer recommended)
+npm (v9 or newer recommended)
+
+## Setup Instructions
+Follow these steps to set up the project locally:
+
+### 1. Clone the repository
+```shellscript
+git clone https://github.com/your-username/egguard-frontend.git
+cd egguard-frontend
+```
+
+### 2. Install dependencies
+
+```shellscript
+npm install
+```
+
+### 3. Start the development server
+
+```shellscript
+npm run dev
+```
+
+The application should now be running at [http://localhost:5173/](http://localhost:5173/)
+
+## Project Structure
 
 ```
 📦 src/
