@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff8000;
+  --color-primary-hover: #EF7800;
+  --color-white: #ffffff;
+  --color-black: #2c2c2c;
+  --color-gray-50: #E8E8E8;
+  --color-gray-100: #E1E1E1;
+  --color-gray-200: #6c6c6c;
+
+  --color-header: #ffffff/40;
+}
+
+:root {
+  font-family: "Nunito", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #2c2c2c;
+  background-color: #FFF;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.bt-primary {
+  @apply rounded-lg bg-primary text-white font-extrabold text-xl px-6 py-3 focus:outline-none;
+  @apply hover:bg-primary-hover;
+  @apply focus:ring-2 focus:ring-primary/50;
+}
+
+.bt-secondary {
+  @apply rounded-lg bg-white text-primary font-extrabold text-xl px-6 py-3 outline-3 outline-primary -outline-offset-3;
+  @apply hover:bg-gray-50;
+  @apply focus:outline-primary focus:-outline-offset-3 focus:outline-3 focus:ring-2 focus:ring-primary/50;
+}
+
+.speed-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply w-10 h-64 rounded-lg appearance-none cursor-pointer bg-gradient-to-t from-white to-primary;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4);  /* Simula un outline */
+}
+
+/* thumb style) */
+.speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply w-14 h-4 rounded-md bg-black outline-8 outline-gray-100 cursor-pointer;
+}
+
+/* Estilo para Firefox */
+.speed-slider::-moz-range-thumb {
+  @apply w-12 h-4 bg-black outline-8 outline-gray-100 cursor-pointer;
+}
+
+/* Style for other browsers (IE/Edge) */
+.speed-slider::-ms-thumb {
+  @apply w-12 h-4 bg-black outline-8 outline-gray-100 cursor-pointer;
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
