@@ -183,17 +183,20 @@ const UserManualControl: React.FC = () => {
 
         {/* speed slider  */}
         <div className="">
-          <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center">
             <input
               type="range"
               min="0"
-              max= {SLIDER_VELOCITY_MAX}
-              value = {sliderValue}
-              onChange = {handleSliderChange}
-              style={{ writingMode: "vertical-rl" }}
+              max={SLIDER_VELOCITY_MAX}
+              value={SLIDER_VELOCITY_MAX - sliderValue}
+              onChange={(e) => {
+                const invertedValue = SLIDER_VELOCITY_MAX - Number(e.target.value);
+                setSliderValue(invertedValue);
+              }}
+              style={{ writingMode: "vertical-lr" }}
               className="speed-slider"
             />
-          </div>
+            </div>
         </div>
       </div>
     </div>
