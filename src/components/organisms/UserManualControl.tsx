@@ -1,3 +1,12 @@
+/**
+ * @file UserManualControl.tsx
+ * @description React component for manually controlling a robot via a UI with speed control and directional buttons.
+ *              Connects to a ROSBridge server to send navigation commands in manual mode.
+ *
+ * @author Manuel Borregales - ROS integration
+ * @author Mario Luis Mesa - UI and design
+ */
+
 import React,{ useState, useEffect, useRef } from 'react';
 import * as ROSLIB from 'roslib';
 import { Direction, Mode, ManualNavMessage, ModeMessage } from '../../types/RosMessages'; 
@@ -11,6 +20,10 @@ const ROS_VELOCITY_MAX = 100;
 const SLIDER_VELOCITY_MAX = 5;
 const VELOCITY_SCALE_FACTOR = ROS_VELOCITY_MAX / SLIDER_VELOCITY_MAX;
 
+/**
+ * Establishes a connection to the ROSBridge server and attaches connection listeners.
+ * @returns A ROSLIB.Ros instance.
+ */
 const createRosConnection = (): ROSLIB.Ros => {
   const ros = new ROSLIB.Ros({
     url: ROSBRIDGE_URL,
@@ -21,6 +34,13 @@ const createRosConnection = (): ROSLIB.Ros => {
   return ros;
 };
 
+/**
+ * Creates a new ROS topic with the specified name and message type.
+ * @param ros - The ROS connection instance.
+ * @param name - The name of the topic.
+ * @param messageType - The ROS message type for the topic.
+ * @returns A ROSLIB.Topic instance.
+ */
 const createTopic = (ros: ROSLIB.Ros, name: string, messageType: string): ROSLIB.Topic => {
   return new ROSLIB.Topic({
     ros,
@@ -29,6 +49,11 @@ const createTopic = (ros: ROSLIB.Ros, name: string, messageType: string): ROSLIB
   });
 };
 
+/**
+ * Publishes a message to the given ROS topic.
+ * @param topic - The ROS topic to publish to.
+ * @param message - The message object to publish.
+ */
 const publishMessage = <T,>(topic: ROSLIB.Topic, message: T): void => {
   topic.publish(new ROSLIB.Message(message));
   console.log(`Published message to ${topic.name}:`, message);
@@ -66,12 +91,21 @@ const UserManualControl: React.FC = () => {
     };
   }, []);
   
+
+  /**
+   * Publishes a message to set the robot into manual mode.
+   */
   const publishModeManual = () => {
     if (!modeTopicRef.current) return;
     const modeMsg: ModeMessage = { mode: Mode.Manual };
     publishMessage(modeTopicRef.current, modeMsg);
   };
 
+  /**
+   * Publishes a manual navigation command to the ROS topic.
+   * @param speed - The velocity value to send.
+   * @param direction - The direction enum value.
+   */
   const publishManualNav = (speed: number, direction: Direction) => {
     if (!navTopicRef.current) {
       console.warn('ROS not connected, cannot publish navigation command.');
@@ -85,6 +119,10 @@ const UserManualControl: React.FC = () => {
     publishMessage(navTopicRef.current, navMsg);
   };
 
+  /**
+   * Handles changes in the speed slider and sends a forward movement command.
+   * @param e - The slider change event.
+   */
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newValue = Number(e.target.value);
     setSliderValue(newValue);
@@ -92,13 +130,19 @@ const UserManualControl: React.FC = () => {
     publishManualNav(newValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
   };
 
-  // When the user presses down on a turning button, send the turn command and record the time
+  /**
+   * Handles pressing down on a turn button. Sends the turn command and records the start time.
+   * @param direction - The direction to turn (Left or Right).
+   */
   const handleTurnMouseDown = (direction: Direction): void => {
     turnPressStartRef.current = Date.now();
     publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, direction);
   };
 
-  // When the user releases the button, calculate the duration and schedule a forward command
+  /**
+   * Handles releasing a turn button. Sends a forward command after a delay
+   * proportional to how long the button was pressed.
+   */
   const handleTurnMouseUp = (): void => {
     if (turnPressStartRef.current) {
       const pressDuration = Date.now() - turnPressStartRef.current;
