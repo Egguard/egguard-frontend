@@ -1,4 +1,8 @@
-const GalleryButton = () => {
+interface GalleryButtonProps {
+  onClick: () => void;
+}
+
+const GalleryButton = ({onClick}: GalleryButtonProps) => {
   const getLastPicture = () => {
     // example
     console.log("Fetching the last picture...");
@@ -6,7 +10,7 @@ const GalleryButton = () => {
   };
 
   return (
-    <div className="relative w-40 h-32">
+    <div className="relative w-40 h-32 cursor-pointer" onClick={onClick}>
       <img
         src={getLastPicture() || "/default-img.jpg"}
         alt="Gallery button"
