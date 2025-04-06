@@ -10,7 +10,7 @@ const Gallery = () => {
     }
 
   return (
-    <div className="relative size-full">
+    <div className="size-full flex items-end">
       <GalleryButton onClick={togglePopup} />
 
       {popUp && <GalleryPopUp togglePopup={togglePopup} />}

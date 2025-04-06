@@ -8,7 +8,7 @@ const UserCamera = () => {
       {/* Camera div molecule */}
       <CameraFeed />
 
-      <div className="inline-flex absolute bottom-0 left-0 items-end justify-between p-6 w-full">
+      <div className="inline-flex absolute size-full bottom-0 left-0 items-end justify-between p-6">
         {/* Gallery molecule with atoms: gallery button and gallery popup */}
         <Gallery />
 

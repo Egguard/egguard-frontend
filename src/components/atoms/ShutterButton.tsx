@@ -7,9 +7,7 @@ const ShutterButton = () => {
     <button
       onClick={handleClick}
       className="size-20 rounded-full bg-white outline-8 outline-white/40"
-    >
-      Click Me
-    </button>
+    ></button>
   );
 };
 
