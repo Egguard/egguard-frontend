@@ -4,7 +4,7 @@ interface GalleryPopUpProps {
 
 const GalleryPopUp = ({ togglePopup }: GalleryPopUpProps) => {
   return (
-    <div className="bg-black/40 size-full flex justify-center items-center absolute inset-0">
+    <div className="bg-black/40 size-full flex justify-center items-center absolute inset-0 z-100">
       <div className="bg-white size-3/4 rounded-2xl py-4 px-8">
         <div className="inline-flex justify-between align-middle w-full">
           <h3>Galería</h3>
