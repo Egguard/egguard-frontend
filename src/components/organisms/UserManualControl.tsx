@@ -7,6 +7,9 @@ const MODE_TOPIC = '/mode';
 const MODE_MESSAGE_TYPE = 'egguard_custom_interfaces/msg/Mode';
 const MANUAL_NAV_TOPIC = '/manual_nav';
 const MANUAL_NAV_MESSAGE_TYPE = 'egguard_custom_interfaces/msg/ManualNav';
+const ROS_VELOCITY_MAX = 100;  
+const SLIDER_VELOCITY_MAX = 5;
+const VELOCITY_SCALE_FACTOR = ROS_VELOCITY_MAX / SLIDER_VELOCITY_MAX;
 
 const createRosConnection = (): ROSLIB.Ros => {
   const ros = new ROSLIB.Ros({
@@ -42,6 +45,8 @@ const UserManualControl: React.FC = () => {
   // using refs avoids re-creating topics on every render
   const modeTopicRef = useRef<ROSLIB.Topic | null>(null);
   const navTopicRef = useRef<ROSLIB.Topic | null>(null);
+  // Ref to record the time when a turn button is pressed
+  const turnPressStartRef = useRef<number | null>(null);
 
   useEffect(() => {
     // First thing to run only once when the page is initialized
@@ -53,7 +58,7 @@ const UserManualControl: React.FC = () => {
       navTopicRef.current = createTopic(rosInstance, MANUAL_NAV_TOPIC, MANUAL_NAV_MESSAGE_TYPE);
 
       publishModeManual();
-      publishManualNav(sliderValue * 20, Direction.Forward);
+      publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
     });
 
     return () => {
@@ -84,7 +89,24 @@ const UserManualControl: React.FC = () => {
     const newValue = Number(e.target.value);
     setSliderValue(newValue);
 
-    publishManualNav(newValue * 20, Direction.Forward);
+    publishManualNav(newValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+  };
+
+  // When the user presses down on a turning button, send the turn command and record the time
+  const handleTurnMouseDown = (direction: Direction): void => {
+    turnPressStartRef.current = Date.now();
+    publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, direction);
+  };
+
+  // When the user releases the button, calculate the duration and schedule a forward command
+  const handleTurnMouseUp = (): void => {
+    if (turnPressStartRef.current) {
+      const pressDuration = Date.now() - turnPressStartRef.current;
+      turnPressStartRef.current = null;
+      setTimeout(() => {
+        publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+      }, pressDuration);
+    }
   };
   
   return (
@@ -93,14 +115,20 @@ const UserManualControl: React.FC = () => {
       <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between">
         {/* turning buttons */}
         <div className="inline-flex gap-4 ">
-          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg">
+          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg"
+            onMouseDown={() => handleTurnMouseDown(Direction.Left)}
+            onMouseUp={handleTurnMouseUp}
+          >
             <img
               className="size-full"
               src="src/assets/icons/curved-arrow.png"
               alt= "left arrow"
             />
           </button>
-          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg">
+          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg"
+            onMouseDown={() => handleTurnMouseDown(Direction.Right)}
+            onMouseUp={handleTurnMouseUp}
+          >
             <img
               className="size-full transform -scale-x-100"
               src="src/assets/icons/curved-arrow.png"
@@ -115,7 +143,7 @@ const UserManualControl: React.FC = () => {
             <input
               type="range"
               min="0"
-              max="5"
+              max= {SLIDER_VELOCITY_MAX}
               value = {sliderValue}
               onChange = {handleSliderChange}
               style={{ writingMode: "vertical-rl" }}
