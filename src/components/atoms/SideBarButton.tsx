@@ -8,9 +8,9 @@ const SideBarButton = (props: SideBarButtonInterface) => {
   return (
     <button
       onClick={props.onClick}
-      className={`"size-15 rounded-2xl flex justify-center align-middle"${
+      className={`bg-amber- size-15 rounded-2xl flex justify-center items-center ${
         props.active ? `bg-primary` : `bg-none`
-      }`}
+      } transition-colors duration-300 ease-in`}
     >
       {props.children}
     </button>
