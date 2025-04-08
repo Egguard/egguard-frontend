@@ -150,7 +150,7 @@ const UserManualControl: React.FC = () => {
   };
   
   return (
-    <div className="w-9/10 h-8/10 m-auto mt-28 bg-red-500">
+    <div className="size-full bg-red-500">
       {/* driving buttons container */}
       <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between">
         {/* turning buttons */}
