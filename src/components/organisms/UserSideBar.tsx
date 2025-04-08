@@ -20,7 +20,7 @@ const UserSideBar = ({ activeView, setActiveView }: UserSideBarProps) => {
   const inactiveColor = "#2C2C2C";
 
   return (
-    <div className="h-full w-24 bg-white flex flex-col justify-center items-center ">
+    <div className="h-full min-w-24 bg-white flex flex-col justify-center items-center ">
       <div className="w-fit h-fit flex flex-col gap-4 ">
         <SideBarButton
           onClick={() => setActiveView(Views.dashboard)}
