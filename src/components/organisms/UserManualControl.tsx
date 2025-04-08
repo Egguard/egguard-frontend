@@ -124,10 +124,9 @@ const UserManualControl: React.FC = () => {
    * @param e - The slider change event.
    */
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const newValue = Number(e.target.value);
-    setSliderValue(newValue);
-
-    publishManualNav(newValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+    const invertedValue = SLIDER_VELOCITY_MAX - Number(e.target.value);
+    setSliderValue(invertedValue);
+    publishManualNav(invertedValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
   };
 
   /**
@@ -145,11 +144,8 @@ const UserManualControl: React.FC = () => {
    */
   const handleTurnMouseUp = (): void => {
     if (turnPressStartRef.current) {
-      const pressDuration = Date.now() - turnPressStartRef.current;
       turnPressStartRef.current = null;
-      setTimeout(() => {
-        publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
-      }, pressDuration);
+      publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
     }
   };
   
@@ -184,18 +180,15 @@ const UserManualControl: React.FC = () => {
         {/* speed slider  */}
         <div className="">
             <div className="flex flex-col items-center">
-            <input
-              type="range"
-              min="0"
-              max={SLIDER_VELOCITY_MAX}
-              value={SLIDER_VELOCITY_MAX - sliderValue}
-              onChange={(e) => {
-                const invertedValue = SLIDER_VELOCITY_MAX - Number(e.target.value);
-                setSliderValue(invertedValue);
-              }}
-              style={{ writingMode: "vertical-lr" }}
-              className="speed-slider"
-            />
+              <input
+                type="range"
+                min="0"
+                max={SLIDER_VELOCITY_MAX}
+                value={SLIDER_VELOCITY_MAX - sliderValue}
+                onChange={handleSliderChange}  // <-- Use it here
+                style={{ writingMode: "vertical-lr" }}
+                className="speed-slider"
+              />
             </div>
         </div>
       </div>
