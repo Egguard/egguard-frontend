@@ -7,7 +7,7 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
   return (
-    <div className="bg-header backdrop-blur-lg px-6 h-20 w-9/10 absolute mt-6 rounded-2xl left-1/2 transform -translate-x-1/2 items-center inline-flex justify-between">
+    <div className="fixed top-0 z-1000 bg-header backdrop-blur-md px-6 h-20 w-9/10 mt-6 rounded-2xl left-1/2 transform -translate-x-1/2 items-center inline-flex justify-between">
       <BrandLogo></BrandLogo>
 
       {props.user ? (
