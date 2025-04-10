@@ -20,7 +20,7 @@ const WhyUs = () => {
   const [activeVid, setActiveVid] = useState(0);
 
   return (
-    <div className="relative w-dvw h-6/10  px-32 py-8 pb-16 flex flex-col justify-between bg-black">
+    <div className="relative w-dvw h-6/10  px-32 py-8 pb-16 flex flex-col justify-between bg-black overflow-clip">
       <h2 className="text-white">¿Por qué elegirnos?</h2>
 
       <div

@@ -3,7 +3,7 @@ import ScrollButton from "../../atoms/ScrollButton";
 
 const Hero = () => {
   return (
-    <div className="h-dvh w-screen flex px-16 items-center">
+    <div className="h-dvh w-screen flex px-16 justify-center items-center overflow-clip">
       <div className="pl-16 min-w-fit">
         <h1>Saluda a Egguard.</h1>
         <p className="text-3xl mb-4 mt-2">
@@ -11,7 +11,7 @@ const Hero = () => {
         </p>
         <Button>Compra el tuyo</Button>
       </div>
-      <img className="size-auto" src="src/assets/images/LandingHero.png" />
+      <img className="size-auto max-w-1/2" src="src/assets/images/LandingHero.png" />
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 justify-center">
         <ScrollButton />
       </div>
