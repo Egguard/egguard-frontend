@@ -51,6 +51,10 @@ label {
   @apply text-black/70 font-semibold text-base uppercase;
 }
 
+.opinion-label {
+  @apply  text-primary mb-4 font-semibold text-base uppercase;
+}
+
 .bt-primary {
   @apply rounded-lg bg-primary text-white font-extrabold text-xl px-6 py-3 focus:outline-none;
   @apply hover:bg-primary-hover;
