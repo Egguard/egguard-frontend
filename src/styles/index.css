@@ -10,7 +10,7 @@
   --color-gray-normal: #E1E1E1;
   --color-gray-dark: #6c6c6c;
 
-  --color-header: #ffffff/40;
+  --color-header: rgba(255,255,255,0.4);
 
   --shadow-user-layout: 0 0 20px 0 rgba(0, 0, 0, 0.25);
 }
@@ -45,6 +45,14 @@ body {
 
 h1 {
   @apply text-primary text-6xl font-bold;
+}
+
+h2 {
+  @apply text-[2.5rem] font-extrabold;
+}
+
+label {
+  @apply text-black/70 font-semibold text-base uppercase;
 }
 
 .bt-primary {
