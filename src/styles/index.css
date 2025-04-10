@@ -35,6 +35,10 @@ a {
   @apply w-fit text-xl font-normal hover:text-primary font-bold cursor-pointer;
 }
 
+.footer-link {
+  @apply w-fit text-xl font-normal hover:text-primary font-bold cursor-pointer inline-flex gap-1 items-center;
+}
+
 body {
   margin: 0;
 }

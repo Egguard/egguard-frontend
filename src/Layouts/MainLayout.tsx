@@ -3,12 +3,13 @@ import Header from "../components/organisms/Header";
 
 interface MainLayoutInterface {
     children: React.ReactNode;
+    user?: boolean;
 }
 
 const MainLayout = (props: MainLayoutInterface) => {
   return(
     <div className="flex flex-col">
-        <Header />
+        <Header user={props.user || false} />
         {props.children}
         <Footer />
     </div>

@@ -1,3 +1,4 @@
+import { routes } from "../../../routes/routes";
 import Button from "../../atoms/Button";
 
 const BuyEgguard = () => {
@@ -13,7 +14,7 @@ const BuyEgguard = () => {
           producción sin esfuerzo, permitiéndote ahorrar tiempo y mejorar el
           bienestar de tus animales.
         </p>
-        <Button>Saber más</Button>
+        <Button as="Link" to={routes.UNDER_CONSTRUCTION}>Saber más</Button>
       </div>
     </div>
   );

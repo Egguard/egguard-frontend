@@ -1,3 +1,4 @@
+import { routes } from "../../routes/routes";
 import BrandLogo from "../atoms/BrandLogo";
 import Button from "../atoms/Button";
 
@@ -14,10 +15,10 @@ const Header = (props: HeaderProps) => {
         <></>
       ) : (
         <div className="inline-flex gap-4">
-          <Button to="" secondary>
+          <Button as="Link" to={routes.USER} secondary>
             Iniciar sesión
           </Button>
-          <Button to="">Comprar</Button>
+          <Button as="Link" to={routes.UNDER_CONSTRUCTION}>Comprar</Button>
         </div>
       )}
     </div>
