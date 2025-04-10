@@ -29,7 +29,7 @@ const OpinionsDisplay = ({ activeOpinion }: OpinionsDisplayProps) => {
     <div className="w-5/10 h-70 shadow-xl bg-white rounded-2xl p-8 pb-6 flex flex-col justify-between">
       <div>
         <label className="opinion-label">la voz del campo</label>
-        <p className="text-[24px] font-semibold w-[36ch]">{currentOpinion.text}</p>
+        <p className="text-[24px] font-semibold w-[36ch]">“{currentOpinion.text}”</p>
       </div>
 
       <p className="text-xl font-medium flex flex-col gap-0">
