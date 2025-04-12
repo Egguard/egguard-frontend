@@ -15,7 +15,7 @@ const Header = (props: HeaderProps) => {
         <></>
       ) : (
         <div className="inline-flex gap-4">
-          <Button as="Link" to={routes.USER} secondary>
+          <Button as="Link" to={routes.LOGIN} secondary>
             Iniciar sesión
           </Button>
           <Button as="Link" to={routes.UNDER_CONSTRUCTION}>Comprar</Button>
