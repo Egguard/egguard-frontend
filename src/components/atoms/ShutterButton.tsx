@@ -1,6 +1,15 @@
-const ShutterButton = () => {
+import { captureCurrentFrame } from "../molecules/CameraFeed";
+
+interface ShutterButtonProps {
+  onCapture: (img: string) => void;
+}
+
+const ShutterButton = ({ onCapture }: ShutterButtonProps) => {
   const handleClick = () => {
-    console.log("Shutter button clicked");
+    const img = captureCurrentFrame();
+    if (img) {
+      onCapture(img);
+    }
   };
 
   return (

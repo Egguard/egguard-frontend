@@ -1,19 +1,19 @@
 import { useState } from "react";
 import GalleryButton from "../atoms/GalleryButton";
-import GalleryPopUp from "../atoms/GalleryPopup";
+import GalleryPopUp from "../atoms/GalleryPopUp";
 
-const Gallery = () => {
-    const[popUp, setPopUp] = useState<boolean>(false);
+interface GalleryProps {
+  images: string[];
+}
 
-    const togglePopup = () => {
-        setPopUp(!popUp);
-    }
+const Gallery = ({ images }: GalleryProps) => {
+  const [popUp, setPopUp] = useState(false);
+  const togglePopup = () => setPopUp(!popUp);
 
   return (
     <div className="size-full flex items-end">
-      <GalleryButton onClick={togglePopup} />
-
-      {popUp && <GalleryPopUp togglePopup={togglePopup} />}
+      <GalleryButton onClick={togglePopup} image={images[0] || null} />
+      {popUp && <GalleryPopUp togglePopup={togglePopup} images={images} />}
     </div>
   );
 };
