@@ -8,98 +8,50 @@
  */
 
 import React,{ useState, useEffect, useRef } from 'react';
-import * as ROSLIB from 'roslib';
+import { useRobotService } from '../../context/RobotServiceContext';
 import { Direction, Mode, ManualNavMessage, ModeMessage } from '../../types/RosMessages'; 
 import CameraFeed from '../molecules/CameraFeed';
 
-const ROSBRIDGE_URL = 'ws://localhost:9090';
 const MODE_TOPIC = '/mode';
 const MODE_MESSAGE_TYPE = 'egguard_custom_interfaces/msg/Mode';
 const MANUAL_NAV_TOPIC = '/manual_nav';
 const MANUAL_NAV_MESSAGE_TYPE = 'egguard_custom_interfaces/msg/ManualNav';
+
 const ROS_VELOCITY_MAX = 100;  
 const SLIDER_VELOCITY_MAX = 5;
 const VELOCITY_SCALE_FACTOR = ROS_VELOCITY_MAX / SLIDER_VELOCITY_MAX;
 
-/**
- * Establishes a connection to the ROSBridge server and attaches connection listeners.
- * @returns A ROSLIB.Ros instance.
- */
-const createRosConnection = (): ROSLIB.Ros => {
-  const ros = new ROSLIB.Ros({
-    url: ROSBRIDGE_URL,
-  });
-  ros.on('connection', () => console.log('Connected to ROSBridge at', ROSBRIDGE_URL));
-  ros.on('error', (error: any) => console.error('ROS Connection Error:', error));
-  ros.on('close', () => console.log('ROS Connection Closed'));
-  return ros;
-};
-
-/**
- * Creates a new ROS topic with the specified name and message type.
- * @param ros - The ROS connection instance.
- * @param name - The name of the topic.
- * @param messageType - The ROS message type for the topic.
- * @returns A ROSLIB.Topic instance.
- */
-const createTopic = (ros: ROSLIB.Ros, name: string, messageType: string): ROSLIB.Topic => {
-  return new ROSLIB.Topic({
-    ros,
-    name,
-    messageType,
-  });
-};
-
-/**
- * Publishes a message to the given ROS topic.
- * @param topic - The ROS topic to publish to.
- * @param message - The message object to publish.
- */
-const publishMessage = <T,>(topic: ROSLIB.Topic, message: T): void => {
-  topic.publish(new ROSLIB.Message(message));
-  console.log(`Published message to ${topic.name}:`, message);
-};
-
-
 const UserManualControl: React.FC = () => {
   const [sliderValue, setSliderValue] = useState(0);
   
-  // TODO: we could use ros state to render different UI
-  const [ros, setRos] = useState<ROSLIB.Ros | null>(null);
-  console.log('ros', ros);
-  
-  // using refs avoids re-creating topics on every render
-  const modeTopicRef = useRef<ROSLIB.Topic | null>(null);
-  const navTopicRef = useRef<ROSLIB.Topic | null>(null);
+  const robotService = useRobotService();
   // Ref to record the time when a turn button is pressed
   const turnPressStartRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // First thing to run only once when the page is initialized
-    const rosInstance = createRosConnection();
-    setRos(rosInstance);
-
-    rosInstance.on('connection', () => {
-      modeTopicRef.current = createTopic(rosInstance, MODE_TOPIC, MODE_MESSAGE_TYPE);
-      navTopicRef.current = createTopic(rosInstance, MANUAL_NAV_TOPIC, MANUAL_NAV_MESSAGE_TYPE);
+    robotService.connect().then(() => {
+      // Create topics once connected.
+      robotService.createTopic(MODE_TOPIC, MODE_MESSAGE_TYPE);
+      robotService.createTopic(MANUAL_NAV_TOPIC, MANUAL_NAV_MESSAGE_TYPE);
 
       publishModeManual();
       publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+    }).catch((error: any) => {
+      console.error('Failed to connect using RobotService:', error);
     });
 
     return () => {
-      rosInstance.close();
+      robotService.disconnect();
     };
-  }, []);
+  }, [robotService]);
   
 
   /**
    * Publishes a message to set the robot into manual mode.
    */
   const publishModeManual = () => {
-    if (!modeTopicRef.current) return;
     const modeMsg: ModeMessage = { mode: Mode.Manual };
-    publishMessage(modeTopicRef.current, modeMsg);
+    robotService.publish(MODE_TOPIC, modeMsg);
   };
 
   /**
@@ -108,16 +60,12 @@ const UserManualControl: React.FC = () => {
    * @param direction - The direction enum value.
    */
   const publishManualNav = (speed: number, direction: Direction) => {
-    if (!navTopicRef.current) {
-      console.warn('ROS not connected, cannot publish navigation command.');
-      return;
-    }
     const navMsg: ManualNavMessage = {
       velocity: speed,
       direction,
       stop_now: false,
     };
-    publishMessage(navTopicRef.current, navMsg);
+    robotService.publish(MANUAL_NAV_TOPIC, navMsg);
   };
 
   /**
@@ -188,7 +136,7 @@ const UserManualControl: React.FC = () => {
                 min="0"
                 max={SLIDER_VELOCITY_MAX}
                 value={SLIDER_VELOCITY_MAX - sliderValue}
-                onChange={handleSliderChange}  // <-- Use it here
+                onChange={handleSliderChange} 
                 style={{ writingMode: "vertical-lr" }}
                 className="speed-slider"
               />
