@@ -34,8 +34,32 @@ export class ConnectionManager implements IConnectionManager {
    */
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ros.on('connection', () => resolve());
-      this.ros.on('error', (err: any) => reject(err));
+      if (this.ros.isConnected) {
+        console.log("ROS is already connected.");
+        resolve();
+        return;
+      }
+      // If not connected, set up listeners for future events
+      const connectionHandler = () => {
+        cleanup(); 
+        resolve();
+      };
+      const errorHandler = (err: any) => {
+        cleanup(); 
+        reject(err);
+      };
+      const cleanup = () => {
+        this.ros.off('connection', connectionHandler);
+        this.ros.off('error', errorHandler);
+      };
+
+      this.ros.on('connection', connectionHandler);
+      this.ros.on('error', errorHandler);
+
+      // Attempt connection (roslib handles the actual connection attempt implicitly 
+      // when the Ros object is created or if it got disconnected)
+      // If the Ros object constructor failed, the error handler should catch it.
+      // If it's trying to reconnect, these listeners will catch the outcome.
     });
   }
 

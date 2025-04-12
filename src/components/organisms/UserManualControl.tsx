@@ -23,26 +23,27 @@ const VELOCITY_SCALE_FACTOR = ROS_VELOCITY_MAX / SLIDER_VELOCITY_MAX;
 
 const UserManualControl: React.FC = () => {
   const [sliderValue, setSliderValue] = useState(0);
+  const [isRosReady, setIsRosReady] = useState(false);
   
   const robotService = useRobotService();
   // Ref to record the time when a turn button is pressed
   const turnPressStartRef = useRef<number | null>(null);
 
   useEffect(() => {
+    setIsRosReady(false);
     robotService.connect().then(() => {
       // Create topics once connected.
       robotService.createTopic(MODE_TOPIC, MODE_MESSAGE_TYPE);
       robotService.createTopic(MANUAL_NAV_TOPIC, MANUAL_NAV_MESSAGE_TYPE);
 
-      publishModeManual();
+      setIsRosReady(true);
       publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
     }).catch((error: any) => {
-      console.error('Failed to connect using RobotService:', error);
+      console.error('Failed to connect or setup topics:', error);
+      setIsRosReady(false);
     });
 
-    return () => {
-      robotService.disconnect();
-    };
+    // Keep the connection open when the component unmounts
   }, [robotService]);
   
 
@@ -75,7 +76,9 @@ const UserManualControl: React.FC = () => {
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const invertedValue = SLIDER_VELOCITY_MAX - Number(e.target.value);
     setSliderValue(invertedValue);
-    publishManualNav(invertedValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+    if (isRosReady) {
+        publishManualNav(invertedValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
+    }
   };
 
   /**
@@ -106,9 +109,10 @@ const UserManualControl: React.FC = () => {
       <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between z-10">
         {/* turning buttons */}
         <div className="inline-flex gap-4 ">
-          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg"
+          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed"
             onMouseDown={() => handleTurnMouseDown(Direction.Left)}
             onMouseUp={handleTurnMouseUp}
+            disabled={!isRosReady}
           >
             <img
               className="size-full"
@@ -116,9 +120,10 @@ const UserManualControl: React.FC = () => {
               alt= "left arrow"
             />
           </button>
-          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg"
+          <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed"
             onMouseDown={() => handleTurnMouseDown(Direction.Right)}
             onMouseUp={handleTurnMouseUp}
+            disabled={!isRosReady}
           >
             <img
               className="size-full transform -scale-x-100"
@@ -137,8 +142,9 @@ const UserManualControl: React.FC = () => {
                 max={SLIDER_VELOCITY_MAX}
                 value={SLIDER_VELOCITY_MAX - sliderValue}
                 onChange={handleSliderChange} 
+                disabled={!isRosReady}
                 style={{ writingMode: "vertical-lr" }}
-                className="speed-slider"
+                className="speed-slider disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
         </div>
