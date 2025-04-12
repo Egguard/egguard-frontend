@@ -1,29 +1,17 @@
 import React, { useEffect } from "react";
 
 const CameraFeed = () => {
-  useEffect(() => {
-    // Llamada a la función setCamera al montar el componente
-    setCamera();
-  }, []);
-
-  const setCamera = () => {
-    console.log("Setting up camera...");
-    new MJPEGCANVAS.Viewer({
-      divID: 'cameraFeed',
-      host: 'localhost',
-      width: 640,
-      height: 480,
-      // Topic
-      topic: '/camera/image_raw', 
-      // (Refresh rate)
-      interval: 200,
-    });
-  };
+  function updateCameraFeed() {
+    const img = document.getElementById("cameraFeed");
+    const timestamp = new Date().getTime(); // Evita caché agregando un timestamp
+    img.src = `http://0.0.0.0:8080/stream?topic=/camera/image_raw`;
+    //img.src = `http://localhost:8080/stream?topic=/turtlebot3/camera/image_raw&console.log("Cactualizando: http://0.0.0.0:8080/stream?topic=/camera/image_raw)"`
+  }
 
   return (
-    <div id="cameraFeed">
-      {/* Aquí se mostrará la secuencia MJPEG */}
-    </div>
+    <div id="divCamera">
+        <img id="cameraFeed" src="http://localhost:8080/stream?topic=/turtlebot3/camera/image_">
+        </div>
   );
 };
 
