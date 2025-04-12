@@ -1,10 +1,11 @@
 const CameraFeed = () => {
   return (
-    <div id="divCamera">
+    <div className="absolute top-0 left-0 size-full -z-10" id="divCamera">
       <img
+      className="size-full object-cover"
         id="cameraFeed"
         crossOrigin="anonymous"
-        src="http://localhost:8080/stream?topic=/turtlebot3/camera/image_"
+        src="http://localhost:8080/stream?topic=/camera/image_raw"
       />
     </div>
   );

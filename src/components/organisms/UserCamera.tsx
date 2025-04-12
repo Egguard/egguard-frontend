@@ -14,7 +14,7 @@ const UserCamera = () => {
   };
 
   return (
-    <div className="size-full bg-red-500 relative">
+    <div className="size-full  relative">
       <CameraFeed />
 
       <div className="inline-flex absolute size-full bottom-0 left-0 items-end justify-between p-6">

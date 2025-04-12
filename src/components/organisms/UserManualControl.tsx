@@ -10,6 +10,7 @@
 import React,{ useState, useEffect, useRef } from 'react';
 import * as ROSLIB from 'roslib';
 import { Direction, Mode, ManualNavMessage, ModeMessage } from '../../types/RosMessages'; 
+import CameraFeed from '../molecules/CameraFeed';
 
 const ROSBRIDGE_URL = 'ws://localhost:9090';
 const MODE_TOPIC = '/mode';
@@ -150,9 +151,11 @@ const UserManualControl: React.FC = () => {
   };
   
   return (
-    <div className="size-full bg-red-500">
+    <div className="size-full relative">
+      <CameraFeed />
+
       {/* driving buttons container */}
-      <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between">
+      <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between z-10">
         {/* turning buttons */}
         <div className="inline-flex gap-4 ">
           <button className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg"
