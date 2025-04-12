@@ -3,15 +3,18 @@
 
 @theme {
   --color-primary: #ff8000;
-  --color-primary-hover: #EF7800;
   --color-white: #ffffff;
   --color-black: #2c2c2c;
-  --color-gray-light: #E8E8E8;
-  --color-gray-normal: #E1E1E1;
+  --color-gray-light: #e8e8e8;
+  --color-gray-normal: #e1e1e1;
   --color-gray-dark: #6c6c6c;
 
-  --color-header: rgba(255,255,255,0.4);
-  --bg-footer: radial-gradient(ellipse at bottom, rgba(255, 0, 0, 1), rgba(0, 0, 255, 0.4));
+  --color-header: rgba(255, 255, 255, 0.4);
+  --bg-footer: radial-gradient(
+    ellipse at bottom,
+    rgba(255, 0, 0, 1),
+    rgba(0, 0, 255, 0.4)
+  );
 
   --shadow-user-layout: 0 0 20px 0 rgba(0, 0, 0, 0.25);
 }
@@ -23,7 +26,7 @@
 
   color-scheme: light dark;
   color: #2c2c2c;
-  background-color: #FFF;
+  background-color: #fff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -56,26 +59,47 @@ label {
 }
 
 .opinion-label {
-  @apply  text-primary mb-4 font-semibold text-base uppercase;
+  @apply text-primary mb-4 font-semibold text-base uppercase;
 }
 
 .bt-primary {
   @apply rounded-lg bg-primary text-white font-extrabold text-xl px-6 py-3 focus:outline-none;
-  @apply hover:bg-primary-hover;
+  @apply hover:brightness-110 hover:text-white;
   @apply focus:ring-2 focus:ring-primary/50;
+  @apply active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out;
 }
 
 .bt-secondary {
   @apply rounded-lg bg-white text-primary font-extrabold text-xl px-6 py-3 outline-3 outline-primary -outline-offset-3;
-  @apply hover:bg-gray-50;
+  @apply hover:bg-primary/10;
   @apply focus:outline-primary focus:-outline-offset-3 focus:outline-3 focus:ring-2 focus:ring-primary/50;
+  @apply active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out;
+}
+
+.input {
+  @apply w-full text-xl px-6 py-3 rounded-xl border-2 border-gray-normal;
+}
+
+.input:focus {
+  outline: none;
+  border: 2px solid #2c2c2c;
+}
+
+.input-placeholder {
+  @apply capitalize absolute top-3.5 left-6 text-lg text-gray-normal 
+  transition-all duration-300 ease-in-out rounded-full -z-10 cursor-text;
+}
+
+.input:focus + .input-placeholder,
+.input:valid + .input-placeholder {
+  @apply transform -translate-y-6 -translate-x-6 text-black bg-white px-2 scale-75 z-10;
 }
 
 .speed-slider {
   -webkit-appearance: none;
   appearance: none;
   @apply w-10 h-64 rounded-lg appearance-none cursor-pointer bg-gradient-to-t from-white to-primary;
-  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4);  /* Simula un outline */
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4); /* Simula un outline */
 }
 
 /* thumb style) */
@@ -94,7 +118,6 @@ label {
 .speed-slider::-ms-thumb {
   @apply w-12 h-4 bg-black outline-8 outline-gray-100 cursor-pointer;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {
