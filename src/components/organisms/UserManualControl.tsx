@@ -37,6 +37,7 @@ const UserManualControl: React.FC = () => {
       robotService.createTopic(MANUAL_NAV_TOPIC, MANUAL_NAV_MESSAGE_TYPE);
 
       setIsRosReady(true);
+      publishModeManual();
       publishManualNav(sliderValue * VELOCITY_SCALE_FACTOR, Direction.Forward);
     }).catch((error: any) => {
       console.error('Failed to connect or setup topics:', error);
