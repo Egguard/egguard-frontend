@@ -6,7 +6,7 @@ import Button from "../atoms/Button";
 const LoginForm = () => {
   return (
     <form className="w-1/2 flex flex-col gap-6">
-      <h3 className="text-2xl font-extrabold text-center">Iniciar sesión</h3>
+      <h3 className="text-2xl font-extrabold text-center">Inicio de sesión</h3>
       <Input type="e-mail">E-mail</Input>
       <div>
         <Input type="password" className="mb-1">Contraseña</Input>
@@ -20,7 +20,7 @@ const LoginForm = () => {
       </div>
       <div className="flex flex-col gap-2">
         <Button className="min-w-full text-center" as="Link" to={routes.USER}>
-          Continuar
+          Iniciar sesión
         </Button>
         <span className="text-base text-black/50">
           ¿No tienes cuenta?
