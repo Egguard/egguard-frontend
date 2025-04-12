@@ -14,28 +14,20 @@ interface ButtonProps {
   className?: string
 }
 
-const Button = ({
-  onClick,
-  to = "/#",
-  disabled = false,
-  as = "button",
-  children,
-  secondary = false,
-  className = "",
-}: ButtonProps) => {
-  const baseClassName = `${secondary ? "bt-secondary" : "bt-primary"} ${className}`
+const Button = (props: ButtonProps) => {
+  const baseClassName = `${props.secondary ? "bt-secondary" : "bt-primary"} ${props.className}`
 
-  if (as === "Link") {
+  if (props.as === "Link") {
     return (
-      <Link className={baseClassName} to={to}>
-        {children}
+      <Link className={baseClassName} to={props.to || "/#"}>
+        {props.children}
       </Link>
     )
   }
 
   return (
-    <button type={as} className={baseClassName} onClick={onClick} disabled={disabled}>
-      {children}
+    <button type={props.as} className={baseClassName} onClick={props.onClick} disabled={props.disabled}>
+      {props.children}
     </button>
   )
 }
