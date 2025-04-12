@@ -5,6 +5,7 @@ import "./styles/App.css";
 import MainLayout from "./Layouts/MainLayout";
 import { routes } from "./routes/routes";
 import UnderConstruction from "./pages/UnderConstruction";
+import Login from "./pages/Login";
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
             </MainLayout>
           }
         />
+        <Route path={routes.LOGIN} element={<Login />} />
       </Routes>
     </div>
   );
