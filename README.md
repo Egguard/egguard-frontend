@@ -1,8 +1,8 @@
 # Egguard Frontend
 
 ## Prerequisites
-Node.js (v18 or newer recommended)
-npm (v9 or newer recommended)
+- Node.js (v18 or newer recommended)
+- npm (v9 or newer recommended)
 
 ## Setup Instructions
 Follow these steps to set up the project locally:
@@ -27,7 +27,7 @@ npm run dev
 
 The application should now be running at [http://localhost:5173/](http://localhost:5173/)
 
-## Project Structure
+## Project Structure (Atomic structure)
 
 ```
 📦 src/

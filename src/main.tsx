@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './pages/App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./styles/index.css";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import { RobotServiceProvider } from "./context/RobotServiceContext";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <RobotServiceProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </RobotServiceProvider>
+  </StrictMode>
+);
+
