@@ -1,15 +1,18 @@
 /**
  * @file Map.tsx
- * @description React component for displaying a map with positioned eggs.
- *              Displays a background map image and overlays egg indicators based on coordinates.
+ * @description React component for displaying a map with positioned eggs and robot position.
+ *              Displays a background map image and overlays egg indicators and robot position based on coordinates.
  * 
- * @author GitHub Copilot
+ * @author 
  */
 
 import { Egg } from '../../lib/types/Egg';
+import { RobotPosition } from '../../lib/types/RobotPosition';
+import robotIconPath from '../../../public/Logo.svg';
 import brokenEggIconPath from '../../assets/images/brokenEgg.png';
 import eggIconPath from '../../assets/images/egg.png';
 import mapPath from '../../assets/images/map.png';
+
 
 // Map boundary coordinates for coordinate system transformation
 interface MapBoundaries {
@@ -26,6 +29,11 @@ interface MapProps {
   eggs?: Egg[];
   
   /**
+   * Robot position to display on the map
+   */
+  robotPosition?: RobotPosition | null;
+  
+  /**
    * Optional CSS class name to apply to the map container
    */
   className?: string;
@@ -38,7 +46,7 @@ interface MapProps {
 }
 
 /**
- * Map component that displays a background image and positions eggs on it
+ * Map component that displays a background image and positions eggs and robot on it
  * based on their coordinates.
  */
 const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath }: MapProps) => {
@@ -48,6 +56,23 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
     upperRight: { x: 4.26, y: -9.03 },
     lowerLeft: { x: -4.38, y: 7.46 },
     lowerRight: { x: -4.78, y: -8.77 }
+  };
+
+  // Calculate the robot's rotation angle from quaternion (yaw angle)
+  const calculateYawAngle = (robotPos?: RobotPosition | null): number => {
+    if (!robotPos) return 0;
+    
+    // Convert quaternion to Euler angles (just yaw/heading in this case)
+    const { orientation_x, orientation_y, orientation_z, orientation_w } = robotPos;
+    
+    // Calculate yaw (rotation around z-axis) from quaternion
+    // This is a simplified conversion that only extracts yaw
+    const siny_cosp = 2 * (orientation_w * orientation_z + orientation_x * orientation_y);
+    const cosy_cosp = 1 - 2 * (orientation_y * orientation_y + orientation_z * orientation_z);
+    const yaw = Math.atan2(siny_cosp, cosy_cosp);
+    
+    // Convert to degrees
+    return yaw * (180 / Math.PI);
   };
 
   /**
@@ -122,6 +147,31 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
           </div>
         );
       })}
+      {/* Robot position indicator */}
+      {robotPosition && (() => {
+        const robotCoords = transformCoordinates(robotPosition.x, robotPosition.y);
+        const rotation = calculateYawAngle(robotPosition);
+
+        return (
+            <div
+            style={{
+                position: 'absolute',
+                left: robotCoords.left,
+                top: robotCoords.top,
+                transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                transition: 'left 0.5s, top 0.5s, transform 0.5s'
+            }}
+            className="flex items-center justify-center z-20"
+            >
+            <img
+                src={robotIconPath}
+                alt="Robot"
+                className="w-12 h-12 object-contain filter drop-shadow-lg"
+                title="Robot Position"
+            />
+            </div>
+        );
+        })()}
     </div>
   );
 };
