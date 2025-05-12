@@ -1,27 +1,62 @@
 // File: src/components/views/MapView.tsx
 
-import { useState, useEffect } from 'react';
-import Map from '../molecules/Map';
-import { Egg } from '../../lib/types/Egg';
-import { RobotPosition } from '../../lib/types/RobotPosition';
-import { useRobotService } from '../../context/RobotServiceContext';
-import { fetchEggsFromAPI } from '../../services/api';
+import { useState, useEffect } from "react";
+import Map from "../molecules/Map";
+import { Egg } from "../../lib/types/Egg";
+import { RobotPosition } from "../../lib/types/RobotPosition";
+import { useRobotService } from "../../context/RobotServiceContext";
+import { fetchEggsFromAPI } from "../../services/api";
+import { LoadingState, ErrorState } from "@/components/atoms/States";
 
-const ODOMETRY_TOPIC = '/odom';
-const ODOMETRY_MESSAGE_TYPE = 'nav_msgs/msg/Odometry';
+const ODOMETRY_TOPIC = "/odom";
+const ODOMETRY_MESSAGE_TYPE = "nav_msgs/msg/Odometry";
 
 const mockEggs: Egg[] = [
-  { id: 1, farmId: 9007199254740991, coordX: 0.1, coordY: 0.1, broken: false, picked: false, timestamp: "2025-05-12T13:46:19.293Z" },
-  { id: 2, farmId: 9007199254740991, coordX: 2.3, coordY: 3.5, broken: true, picked: false, timestamp: "2025-05-12T13:46:19.293Z" },
-  { id: 3, farmId: 9007199254740991, coordX: -2.1, coordY: -4.2, broken: false, picked: false, timestamp: "2025-05-12T13:46:19.293Z" },
-  { id: 4, farmId: 9007199254740991, coordX: -3.5, coordY: 4.2, broken: true, picked: false, timestamp: "2025-05-12T13:46:19.293Z" }
+  {
+    id: 1,
+    farmId: 9007199254740991,
+    coordX: 0.1,
+    coordY: 0.1,
+    broken: false,
+    picked: false,
+    timestamp: "2025-05-12T13:46:19.293Z",
+  },
+  {
+    id: 2,
+    farmId: 9007199254740991,
+    coordX: 2.3,
+    coordY: 3.5,
+    broken: true,
+    picked: false,
+    timestamp: "2025-05-12T13:46:19.293Z",
+  },
+  {
+    id: 3,
+    farmId: 9007199254740991,
+    coordX: -2.1,
+    coordY: -4.2,
+    broken: false,
+    picked: false,
+    timestamp: "2025-05-12T13:46:19.293Z",
+  },
+  {
+    id: 4,
+    farmId: 9007199254740991,
+    coordX: -3.5,
+    coordY: 4.2,
+    broken: true,
+    picked: false,
+    timestamp: "2025-05-12T13:46:19.293Z",
+  },
 ];
 
 const MapView = () => {
   const [eggs, setEggs] = useState<Egg[]>(mockEggs);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [robotPosition, setRobotPosition] = useState<RobotPosition | null>(null);
+  const [robotPosition, setRobotPosition] = useState<RobotPosition | null>(
+    null
+  );
   const [isRosConnected, setIsRosConnected] = useState<boolean>(false);
 
   const robotService = useRobotService();
@@ -45,13 +80,13 @@ const MapView = () => {
               orientation_x: orientation.x,
               orientation_y: orientation.y,
               orientation_z: orientation.z,
-              orientation_w: orientation.w
+              orientation_w: orientation.w,
             });
           }
         });
         setIsRosConnected(true);
       } catch (error) {
-        console.error('Failed to connect to ROS:', error);
+        console.error("Failed to connect to ROS:", error);
         setIsRosConnected(false);
       }
     };
@@ -67,15 +102,16 @@ const MapView = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    const fetchEggs = async () => {      try {
+    const fetchEggs = async () => {
+      try {
         setIsLoading(true);
-        setError(null);
-        const today = new Date().toISOString().split('T')[0];
+        setError("Holaa");
+        const today = new Date().toISOString().split("T")[0];
         const data = await fetchEggsFromAPI(farmId, today, controller.signal);
         setEggs(data);
       } catch (error) {
-        console.error('Error fetching egg data:', error);
-        setError('Failed to fetch egg data. Please try again later.');
+        console.error("Error fetching egg data:", error);
+        setError("Failed to fetch egg data. Please try again later.");
         setEggs(mockEggs);
       } finally {
         setIsLoading(false);
@@ -86,55 +122,91 @@ const MapView = () => {
     return () => controller.abort();
   }, [farmId]);
 
-  const brokenEggs = eggs.filter(e => e.broken && !e.picked);
+  const brokenEggs = eggs.filter((e) => e.broken && !e.picked);
+
+  const [legend, setLegend] = useState(false);
 
   return (
-    <div className="w-full h-full p-4">
-      <div className="mb-4">
+    <div className="size- relative group h-60">
+      {/* loading and error div with map as blurred background */}
+      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center">
         {isLoading ? (
-          <div className="flex items-center">
-            <div className="animate-spin mr-2 h-5 w-5 border-t-2 border-b-2 border-primary rounded-full"></div>
-            <p className="text-gray-600">Loading egg data...</p>
-          </div>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
+          <LoadingState whiteText />
         ) : (
-          <p className="text-gray-600">
-            Current egg locations: {eggs.length} eggs found ({brokenEggs.length} broken eggs to collect)
-          </p>
+          error && (
+            <ErrorState
+              small
+              error={"No se han podido encontrar tus huevos."}
+            />
+          )
         )}
       </div>
+      <img
+        src={"src/assets/images/map.png"}
+        className="size-full object-cover -z-10"
+      />
 
-      <div className="h-[40vh] w-xl border rounded-lg overflow-hidden shadow-md">
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full bg-gray-100">
-            <div className="animate-spin mr-2 h-8 w-8 border-t-4 border-b-4 border-primary rounded-full"></div>
-            <p className="text-lg font-semibold text-gray-500">Loading map...</p>
-          </div>
-        ) : (
-          <Map eggs={eggs} robotPosition={robotPosition} />
-        )}
-      </div>
+      {!isLoading && eggs && robotPosition && (
+        <Map eggs={eggs} robotPosition={robotPosition} />
+      )}
 
-      <div className="mt-4 flex items-center gap-4">
-        <div className="flex items-center">
-          <img src="src/assets/images/egg.png" alt="Normal Egg" className="w-5 h-5 object-contain mr-2" />
-          <span>Normal Egg</span>
-        </div>
-        <div className="flex items-center">
-          <img src="src/assets/images/brokenEgg.png" alt="Broken Egg" className="w-5 h-5 object-contain mr-2" />
-          <span>Broken Egg</span>
-        </div>
-        <div className="flex items-center">
-          <img src="/Logo.svg" alt="Robot" className="w-5 h-5 object-contain mr-2" />
-          <span>Robot Position</span>
-        </div>
-        {robotPosition && (
-          <div className="ml-auto text-xs text-gray-500">
-            Robot at ({robotPosition.x.toFixed(2)}, {robotPosition.y.toFixed(2)})
+      {/* legend button */}
+      {!legend && (
+        <button
+          className="hidden absolute bottom-4 left-4 p-2 bg-gray-light rounded-md group-hover:block 
+      hover:cursor-pointer hover:brightness-110 active:scale-95 active:brightness-90"
+          onClick={() => setLegend(true)}
+        >
+          <img
+            className="size-8"
+            src="src/assets/icons/legend.svg"
+            alt="legend"
+          />
+        </button>
+      )}
+
+      {/* legend */}
+      {legend && (
+        <div className="absolute w-full bottom-0 bg-gray-light py-2 px-4 inline-flex gap-4 justify-end">
+          <button
+            className="absolute left-2 bottom-1 size-8
+          hover:cursor-pointer hover:opacity-90 active:scale-95 active:opacity-100"
+            onClick={() => setLegend(false)}
+          >
+            <img src="src/assets/icons/close.svg" className=" " />
+          </button>
+          <div className="inline-flex gap-1">
+            <img
+              src="src/assets/images/egg.png"
+              alt="Normal Egg"
+              className="size-5 object-contain"
+            />
+            <span>Huevo normal</span>
           </div>
-        )}
-      </div>
+          <div className="inline-flex gap-1">
+            <img
+              src="src/assets/images/brokenEgg.png"
+              alt="Broken Egg"
+              className="size-5 object-contain"
+            />
+            <span>Huevo roto</span>
+          </div>
+          <div className="inline-flex gap-1">
+            <img
+              src="/Logo.svg"
+              alt="Robot"
+              className="size-5 object-contain"
+            />
+            <span>Posicion robot</span>
+          </div>
+          {robotPosition && (
+            <div className="ml-auto text-xs text-gray-500">
+              Robot at ({robotPosition.x.toFixed(2)},{" "}
+              {robotPosition.y.toFixed(2)})
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
