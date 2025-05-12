@@ -43,7 +43,7 @@ const mockEggs: Egg[] = [
     id: 4,
     farmId: 9007199254740991,
     coordX: -3.5,
-    coordY: 5.8,
+    coordY: 4.2,
     broken: true,
     picked: false,
     timestamp: "2025-05-12T13:46:19.293Z"
@@ -53,41 +53,70 @@ const mockEggs: Egg[] = [
 const MapView = () => {
   // State to hold egg data
   const [eggs, setEggs] = useState<Egg[]>(mockEggs);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   
-  // In a real implementation, this would fetch the egg data from an API endpoint
-  useEffect(() => {
-    // For now, we're using mock data
-    // In a real application, this would be replaced with an API call:
-    // 
-    // const fetchEggs = async () => {
-    //   try {
-    //     const response = await fetch('your-api-endpoint');
-    //     const data = await response.json();
-    //     setEggs(data);
-    //   } catch (error) {
-    //     console.error('Error fetching egg data:', error);
-    //   }
-    // };
-    // 
-    // fetchEggs();
+  const farmId = 1; // Hardcoded farm ID as requested
+  
+  // Fetch egg data from the API endpoint
+//   useEffect(() => {
+//     const fetchEggs = async () => {
+//       try {
+//         setIsLoading(true);
+//         setError(null);
+        
+//         // Get today's date in YYYY-MM-DD format
+//         const today = new Date().toISOString().split('T')[0];
+        
+//         // Build the URL with query parameters
+//         const url = `http://localhost:8080/api/v1/farms/${farmId}/eggs?picked=false&date=${today}`;
+        
+//         const response = await fetch(url);
+        
+//         if (!response.ok) {
+//           throw new Error(`API request failed with status ${response.status}`);
+//         }
+        
+//         const data = await response.json();
+//         setEggs(data);
+//         setIsLoading(false);
+//       } catch (error) {
+//         console.error('Error fetching egg data:', error);
+//         setError('Failed to fetch egg data. Please try again later.');
+//         setIsLoading(false);
+//       }
+//     };
     
-    // Optional: Set up interval to periodically refresh the egg data
-    // const refreshInterval = setInterval(fetchEggs, 30000); // 30 seconds
-    // return () => clearInterval(refreshInterval);
-  }, []);
-
+//     fetchEggs();
+//   }, [farmId]);
   return (
     <div className="w-full h-full p-4">
       <div className="mb-4">
-        <p className="text-gray-600">
-          Current egg locations: {eggs.length} eggs found
-          ({eggs.filter(e => e.broken && !e.picked).length} broken eggs to collect)
-        </p>
+        {isLoading ? (
+          <div className="flex items-center">
+            <div className="animate-spin mr-2 h-5 w-5 border-t-2 border-b-2 border-primary rounded-full"></div>
+            <p className="text-gray-600">Loading egg data...</p>
+          </div>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <p className="text-gray-600">
+            Current egg locations: {eggs.length} eggs found
+            ({eggs.filter(e => e.broken && !e.picked).length} broken eggs to collect)
+          </p>
+        )}
       </div>
       
       {/* Map container with fixed height */}
       <div className="h-[40vh] w-xl border rounded-lg overflow-hidden shadow-md">
-        <Map eggs={eggs} />
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full bg-gray-100">
+            <div className="animate-spin mr-2 h-8 w-8 border-t-4 border-b-4 border-primary rounded-full"></div>
+            <p className="text-lg font-semibold text-gray-500">Loading map...</p>
+          </div>
+        ) : (
+          <Map eggs={eggs} />
+        )}
       </div>
       
       {/* Legend */}
@@ -99,10 +128,6 @@ const MapView = () => {
         <div className="flex items-center">
           <img src="src/assets/images/brokenEgg.png" alt="Broken Egg" className="w-5 h-5 object-contain mr-2" />
           <span>Broken Egg</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-gray-300 border border-white mr-2"></div>
-          <span>Collected Egg</span>
         </div>
       </div>
     </div>
