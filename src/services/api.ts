@@ -1,4 +1,4 @@
-import { PaginatedResponse, UserNotification } from "../types/apiTypes";
+import { PaginatedResponse, UserNotification } from "@/lib/types/apiTypes";
 
 const API_BASE_URL = "http://localhost:8080";
 const FARM_ID = 1;

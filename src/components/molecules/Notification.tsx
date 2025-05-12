@@ -1,5 +1,5 @@
 import { formatDate } from "@/lib/formatDate";
-import { NotificationSeverity } from "@/types/apiTypes";
+import { NotificationSeverity } from "@/lib/types/apiTypes";
 
 interface notificationInterface {
   severity: NotificationSeverity;
