@@ -9,7 +9,7 @@
 
 import React,{ useState, useEffect, useRef } from 'react';
 import { useRobotService } from '../../context/RobotServiceContext';
-import { Direction, Mode, ManualNavMessage, ModeMessage } from '../../types/RosMessages'; 
+import { Direction, Mode, ManualNavMessage, ModeMessage } from '../../lib/types/RosMessages'; 
 import CameraFeed from '../molecules/CameraFeed';
 
 const MODE_TOPIC = '/mode';
