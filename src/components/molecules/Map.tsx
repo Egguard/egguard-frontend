@@ -7,6 +7,9 @@
  */
 
 import { Egg } from '../../lib/types/Egg';
+import brokenEggIconPath from '../../assets/images/brokenEgg.png';
+import eggIconPath from '../../assets/images/egg.png';
+import mapPath from '../../assets/images/map.png';
 
 // Map boundary coordinates for coordinate system transformation
 interface MapBoundaries {
@@ -38,7 +41,7 @@ interface MapProps {
  * Map component that displays a background image and positions eggs on it
  * based on their coordinates.
  */
-const Map = ({ eggs = [], className = '', mapImagePath = 'src/assets/images/map.png' }: MapProps) => {
+const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath }: MapProps) => {
   // Map boundaries in ROS coordinate system
   const mapBoundaries: MapBoundaries = {
     upperLeft: { x: 4.65, y: 7.12 },
@@ -111,7 +114,7 @@ const Map = ({ eggs = [], className = '', mapImagePath = 'src/assets/images/map.
             className="flex items-center justify-center"
           >
             <img
-              src={egg.broken ? 'src/assets/images/brokenEgg.png' : 'src/assets/images/egg.png'}
+              src={egg.broken ? brokenEggIconPath : eggIconPath}
               alt={egg.broken ? 'Broken Egg' : 'Egg'}
               className="w-8 h-8 object-contain drop-shadow-md z-10"
               title={`Egg ID: ${egg.id}${egg.broken ? ' (Broken)' : ''}`}
