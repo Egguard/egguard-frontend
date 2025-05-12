@@ -11,6 +11,7 @@ import Map from '../molecules/Map';
 import { Egg } from '../../lib/types/Egg';
 
 // Mock egg data to demonstrate the Map component
+import { fetchEggsFromAPI } from '../../services/api';
 const mockEggs: Egg[] = [
   {
     id: 1,
@@ -60,7 +61,7 @@ const MapView = () => {
   
   // Fetch egg data from the API endpoint
 //   useEffect(() => {
-//     const fetchEggs = async () => {
+
 //       try {
 //         setIsLoading(true);
 //         setError(null);
@@ -89,6 +90,29 @@ const MapView = () => {
     
 //     fetchEggs();
 //   }, [farmId]);
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchEggs = async () => {      try {
+        setIsLoading(true);
+        setError(null);
+        const today = new Date().toISOString().split('T')[0];
+        const data = await fetchEggsFromAPI(farmId, today, controller.signal);
+        setEggs(data);
+      } catch (error) {
+        console.error('Error fetching egg data:', error);
+        setError('Failed to fetch egg data. Please try again later.');
+        setEggs(mockEggs);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEggs();
+    return () => controller.abort();
+  }, [farmId]);
+
+  const brokenEggs = eggs.filter(e => e.broken && !e.picked);
+
   return (
     <div className="w-full h-full p-4">
       <div className="mb-4">
@@ -101,12 +125,12 @@ const MapView = () => {
           <p className="text-red-500">{error}</p>
         ) : (
           <p className="text-gray-600">
-            Current egg locations: {eggs.length} eggs found
+            Current egg locations: {eggs.length} eggs found ({brokenEggs.length} broken eggs to collect)
             ({eggs.filter(e => e.broken && !e.picked).length} broken eggs to collect)
           </p>
         )}
       </div>
-      
+
       {/* Map container with fixed height */}
       <div className="h-[40vh] w-xl border rounded-lg overflow-hidden shadow-md">
         {isLoading ? (
