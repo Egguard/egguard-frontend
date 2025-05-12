@@ -1,18 +1,28 @@
-export const LoadingState = () => {
+export const LoadingState = ({
+  blackText,
+  whiteText,
+}: {
+  whiteText?: boolean;
+  blackText?: boolean;
+}) => {
   return (
-    <div className="flex items-center justify-center flex-col mt-40">
-      <p className="text-gray-400 text-2xl font-bold text-center">
+    <div className="h-full flex flex-col justify-center items-center gap-4">
+      <img className="w-1/4" src="/loader.gif" alt="imagen de carga" />
+      <p
+        className={`text-2xl font-bold text-center ${
+          blackText ? "text-black" : whiteText ? "text-white" :"text-gray-400"
+        }`}
+      >
         Cargando...
       </p>
-      <img className="w-1/4" src="/loader.gif" alt="imagen de carga" />
     </div>
   );
 };
 
-export const ErrorState = () => {
+export const ErrorState = ({ error, small }: { small?: boolean, error: string }) => {
   return (
-    <p className="text-red-500 text-2xl font-bold text-center mt-40">
-      Error al cargar las notificaciones.
+    <p className={`text-red-500 ${small ? "text-lg w-[20ch] mx-auto" : "text-2xl"} font-bold text-center h-full flex justify-center items-center`}>
+      {error}
     </p>
   );
 };
