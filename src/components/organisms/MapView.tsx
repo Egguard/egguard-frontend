@@ -127,7 +127,7 @@ const MapView = () => {
   const [legend, setLegend] = useState(false);
 
   return (
-    <div className="size- relative group h-60">
+    <div className="size-full relative group">
       {/* loading and error div with map as blurred background */}
       <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center">
         {isLoading ? (
