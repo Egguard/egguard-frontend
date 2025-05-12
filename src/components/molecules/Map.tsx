@@ -51,13 +51,16 @@ interface MapProps {
  */
 const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath }: MapProps) => {
   // Map boundaries in ROS coordinate system
+  // Note: We're defining these based on the ROS coordinate system where:
+  // - X typically points forward in the robot's reference frame
+  // - Y typically points to the left in the robot's reference frame
   const mapBoundaries: MapBoundaries = {
-    upperLeft: { x: 4.65, y: 7.12 },
-    upperRight: { x: 4.26, y: -9.03 },
-    lowerLeft: { x: -4.38, y: 7.46 },
-    lowerRight: { x: -4.78, y: -8.77 }
+    upperLeft: { x: 5, y: 7 },
+    upperRight: { x: 5.8, y: -9 },
+    lowerLeft: { x: -4.5, y: 10 },
+    lowerRight: { x: -5, y: -9 }
   };
-
+ 
   // Calculate the robot's rotation angle from quaternion (yaw angle)
   const calculateYawAngle = (robotPos?: RobotPosition | null): number => {
     if (!robotPos) return 0;
@@ -78,6 +81,10 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
   /**
    * Transforms ROS map coordinates (x, y) to pixel coordinates (left, top)
    * for correct positioning on the image
+   * 
+   * The coordinate systems are different:
+   * - In ROS: X is forward, Y is left
+   * - On the map image: X is right, Y is down
    */
   const transformCoordinates = (coordX: number, coordY: number) => {
     // Calculate the relative position within the boundaries (0-1)
@@ -102,9 +109,10 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
     );
 
     // Calculate normalized positions (0-1)
-    const normalizedX = (coordX - minX) / (maxX - minX);
-    // Y is inverted in the screen coordinate system
-    const normalizedY = 1 - (coordY - minY) / (maxY - minY);
+    // For the map display: X increases from left to right, Y increases from top to bottom
+    // Swapping X and Y coordinates to match the orientation of the map image
+    const normalizedY = (coordX - minX) / (maxX - minX);
+    const normalizedX = 1 - (coordY - minY) / (maxY - minY);
 
     // Convert to percentages for CSS positioning
     return {
@@ -149,7 +157,9 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
       })}
       {/* Robot position indicator */}
       {robotPosition && (() => {
+        // Add 0.8 offset to the X coordinate to shift the robot to the right
         const robotCoords = transformCoordinates(robotPosition.x, robotPosition.y);
+        // We still calculate the rotation angle for debugging or future use, but don't apply it
         const rotation = calculateYawAngle(robotPosition);
 
         return (
@@ -158,16 +168,17 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
                 position: 'absolute',
                 left: robotCoords.left,
                 top: robotCoords.top,
-                transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
-                transition: 'left 0.5s, top 0.5s, transform 0.5s'
+                transform: 'translate(-50%, -50%)',
+                transition: 'left 0.5s, top 0.5s'
             }}
             className="flex items-center justify-center z-20"
+            data-heading={rotation.toFixed(1)} // Store heading as data attribute for debugging
             >
             <img
                 src={robotIconPath}
                 alt="Robot"
                 className="w-12 h-12 object-contain filter drop-shadow-lg"
-                title="Robot Position"
+                title={`Robot at (${robotPosition.x.toFixed(2)}, ${robotPosition.y.toFixed(2)})`}
             />
             </div>
         );
