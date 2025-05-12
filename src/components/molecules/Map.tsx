@@ -93,9 +93,10 @@ const Map = ({ eggs = [], className = '', mapImagePath = 'src/assets/images/map.
         alt="Farm Map"
         className="size-full object-cover -z-10"
       />
-      
-      {/* Egg indicators */}
-      {eggs.map((egg) => {
+        {/* Egg indicators */}
+      {eggs
+        .filter(egg => !egg.picked) // Filter out picked eggs
+        .map((egg) => {
         const { left, top } = transformCoordinates(egg.coordX, egg.coordY);
         
         return (
@@ -109,12 +110,11 @@ const Map = ({ eggs = [], className = '', mapImagePath = 'src/assets/images/map.
             }}
             className="flex items-center justify-center"
           >
-            <div 
-              className={`w-6 h-6 rounded-full ${
-                egg.picked ? 'bg-gray-300' : 
-                egg.broken ? 'bg-red-500' : 'bg-yellow-300'
-              } border-2 border-white shadow-lg z-10`}
-              title={`Egg ID: ${egg.id}${egg.broken ? ' (Broken)' : ''}${egg.picked ? ' (Picked)' : ''}`}
+            <img
+              src={egg.broken ? 'src/assets/images/brokenEgg.png' : 'src/assets/images/egg.png'}
+              alt={egg.broken ? 'Broken Egg' : 'Egg'}
+              className="w-8 h-8 object-contain drop-shadow-md z-10"
+              title={`Egg ID: ${egg.id}${egg.broken ? ' (Broken)' : ''}`}
             />
           </div>
         );

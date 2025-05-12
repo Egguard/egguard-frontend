@@ -93,11 +93,11 @@ const MapView = () => {
       {/* Legend */}
       <div className="mt-4 flex items-center gap-4">
         <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-yellow-300 border border-white mr-2"></div>
+          <img src="src/assets/images/egg.png" alt="Normal Egg" className="w-5 h-5 object-contain mr-2" />
           <span>Normal Egg</span>
         </div>
         <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-red-500 border border-white mr-2"></div>
+          <img src="src/assets/images/brokenEgg.png" alt="Broken Egg" className="w-5 h-5 object-contain mr-2" />
           <span>Broken Egg</span>
         </div>
         <div className="flex items-center">
