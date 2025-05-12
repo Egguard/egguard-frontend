@@ -1,5 +1,6 @@
 import Notification from "../molecules/Notification";
 import { useUserNotifications } from "../../lib/hooks/useUserNotifications";
+import { ErrorState, LoadingState } from "../atoms/States";
 
 const UserNotifications = () => {
   const { data, isLoading, isError } = useUserNotifications();
@@ -10,18 +11,12 @@ const UserNotifications = () => {
         <h2 className="font-bold text-black/60">Notificaciones</h2>
         <div>Paginador</div>
       </div>
+
       <div className="space-y-4 mt-4">
-        {isLoading && (
-          <div className="flex items-center justify-center flex-col mt-40">
-            <p className="text-gray-400 text-2xl font-bold text-center">
-              Cargando...
-            </p>
-            <img className="w-1/4" src="/loader.gif" />
-          </div>
-        )}
-        {isError && (
-          <p className="text-red-500 text-2xl font-bold text-center mt-40">Error al cargar las notificaciones.</p>
-        )}
+        {isLoading && <LoadingState />}
+
+        {isError && <ErrorState />}
+
         {!isLoading &&
           !isError &&
           data?.map((n) => (
