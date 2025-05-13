@@ -54,6 +54,7 @@ const GalleryPopUp = ({ togglePopup, images }: GalleryPopUpProps) => {
                   />
                 ) : (
                   <img
+                    draggable='false'
                     src="/default-img.jpg"
                     className="object-cover size-full"
                   />

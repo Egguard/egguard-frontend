@@ -14,8 +14,8 @@ interface notificationInterface {
 
 const SeverityImgRoutes: Record<NotificationSeverity, string> = {
   [NotificationSeverity.CRITICAL]: "src/assets/icons/critical.svg",
-  [NotificationSeverity.WARNING]: "src/assets/icons/info.svg",
-  [NotificationSeverity.INFO]: "src/assets/icons/warning.svg",
+  [NotificationSeverity.WARNING]: "src/assets/icons/warning.svg",
+  [NotificationSeverity.INFO]: "src/assets/icons/info.svg",
 };
 
 const Notification = (props: notificationInterface) => {

@@ -135,29 +135,31 @@ const UserManualControl: React.FC = () => {
         {/* turning buttons */}
         <div className="inline-flex gap-4 ">
           <button
-            className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed select-none"
             onMouseDown={() => handleTurnMouseDown(Direction.Left)}
             onMouseUp={handleTurnMouseUp}
             disabled={!isRosReady}
           >
             <img
-              className="size-full"
+              className="size-full select-none"
+              draggable="false"
               src="src/assets/icons/curved-arrow.png"
               alt="left arrow"
             />
           </button>
-          <button
-            className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            <button
+            className="size-24 p-5 rounded-2xl bg-white/50 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed select-none"
             onMouseDown={() => handleTurnMouseDown(Direction.Right)}
             onMouseUp={handleTurnMouseUp}
             disabled={!isRosReady}
-          >
+            >
             <img
-              className="size-full transform -scale-x-100"
+              className="size-full transform -scale-x-100 select-none"
+              draggable="false"
               src="src/assets/icons/curved-arrow.png"
               alt="right arrow"
             />
-          </button>
+            </button>
         </div>
 
         {/* speed slider  */}
@@ -170,7 +172,7 @@ const UserManualControl: React.FC = () => {
             onChange={handleSliderChange}
             disabled={!isRosReady}
             style={{ writingMode: "vertical-lr" }}
-            className="speed-slider disabled:opacity-50 !disabled:cursor-not-allowed"
+            className="speed-slider disabled:opacity-50 !disabled:cursor-not-allowed select-none"
           />
         </div>
       </motion.div>

@@ -151,6 +151,7 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
               alt={egg.broken ? 'Broken Egg' : 'Egg'}
               className="w-8 h-8 object-contain drop-shadow-md z-10"
               title={`Egg ID: ${egg.id}${egg.broken ? ' (Broken)' : ''}`}
+              draggable='false'
             />
           </div>
         );

@@ -124,7 +124,7 @@ const MapView = () => {
   const [legend, setLegend] = useState(false);
 
   return (
-    <div className="relative size-full rounded-2xl group">
+    <div className="relative size-full rounded-2xl group select-none">
       {(isLoading || error) && (
         <>
           <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center rounded-2xl overflow-clip">
@@ -136,6 +136,7 @@ const MapView = () => {
           </div>
           <img
             src={"src/assets/images/map.png"}
+            draggable='false'
             className="absolute inset-0 w-full h-full object-cover -z-10"
             alt="Map background"
           />
