@@ -4,7 +4,7 @@ import { useUserNotifications } from "../../lib/hooks/useUserNotifications";
 import { ErrorState, LoadingState } from "../atoms/States";
 import Paginator from "../atoms/Paginator";
 
-const UserNotifications = () => {
+const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
   const [page, setPage] = useState(0);
   const [pageSize] = useState(5);
   const { data, isLoading, isError } = useUserNotifications(page, pageSize);
@@ -22,10 +22,18 @@ const UserNotifications = () => {
   };
 
   return (
-    <div className="w-8/10 mx-auto py-12">
+    <div
+      className={
+        dashboard
+          ? "w-full bg-gray-light rounded-lg p-4 h-8/10"
+          : "w-8/10 mx-auto py-12"
+      }
+    >
       <div className="inline-flex justify-between w-full items-center">
-        <h2 className="font-bold text-black/60">Notificaciones</h2>
-        
+        <h2 className={dashboard ? "!text-3xl" : "font-bold text-black/60"}>
+          Notificaciones
+        </h2>
+
         {data && (
           <Paginator
             currentPage={data.number}
@@ -38,16 +46,19 @@ const UserNotifications = () => {
         )}
       </div>
 
-      <div className="space-y-4 mt-4">
-        {isLoading && <LoadingState />}
-        {isError && <ErrorState />}
-        
+      <div className="h-8/10">
+        {isLoading ? (
+          <LoadingState />
+        ) : (
+          isError && <ErrorState error="Error cargando notificaciones." />
+        )}
+
         {!isLoading && !isError && data?.content.length === 0 && (
           <div className="text-center py-8 text-gray-500">
             No hay notificaciones disponibles
           </div>
         )}
-        
+
         {!isLoading &&
           !isError &&
           data?.content.map((notification) => (
