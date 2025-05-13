@@ -9,8 +9,8 @@
 import { Egg } from '../../lib/types/Egg';
 import { RobotPosition } from '../../lib/types/RobotPosition';
 import robotIconPath from '../../../public/Logo.svg';
-import brokenEggIconPath from '../../assets/images/brokenEgg.png';
-import eggIconPath from '../../assets/images/egg.png';
+import brokenEggIconPath from '../../assets/icons/broken-egg.svg';
+import eggIconPath from '../../assets/icons/egg.svg';
 import mapPath from '../../assets/images/map.png';
 
 

@@ -5,6 +5,7 @@ import UserManualControl from "../organisms/UserManualControl";
 import UserCamera from "../organisms/UserCamera";
 import UnderConstruction from "../../pages/UnderConstruction";
 import UserNotifications from "../organisms/UserNotifications";
+import UserDashboard from "../organisms/UserDashboard";
 
 const UserContainer = () => {
   const [activeView, setActiveView] = useState(Views.dashboard);
@@ -14,7 +15,7 @@ const UserContainer = () => {
       <UserSideBar activeView={activeView} setActiveView={setActiveView} />
 
 
-      {activeView === Views.dashboard && <UnderConstruction noVolver />}
+      {activeView === Views.dashboard && <UserDashboard />}
       {activeView === Views.camera && <UserCamera />}
       {activeView === Views.control && <UserManualControl />}
       {activeView === Views.stats && <UnderConstruction noVolver />}
