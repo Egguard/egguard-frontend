@@ -177,7 +177,7 @@ const MapView = () => {
           </button>
           <div className="inline-flex gap-1">
             <img
-              src="src/assets/images/egg.png"
+              src="src/assets/icons/egg.svg"
               alt="Normal Egg"
               className="size-5 object-contain"
             />
@@ -185,7 +185,7 @@ const MapView = () => {
           </div>
           <div className="inline-flex gap-1">
             <img
-              src="src/assets/images/brokenEgg.png"
+              src="src/assets/icons/broken-egg.svg"
               alt="Broken Egg"
               className="size-5 object-contain"
             />
