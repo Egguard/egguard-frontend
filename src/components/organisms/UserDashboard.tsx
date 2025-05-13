@@ -4,12 +4,12 @@ import UserNotifications from "./UserNotifications";
 
 const UserDashboard = () => {
   return (
-    <div className="grid grid-cols-2 gap-12 px-16 py-12 h-full">
-      <div className="flex flex-col gap-6">
-        <div className="rounded-lg overflow-hidden h-full">
+    <div className="grid grid-cols-2 gap-6 py-12 px-16 mx-auto">
+      <div className="h-6/7 gap-6 flex flex-col relative">
+        <div className="rounded-lg overflow-hidden absolute top-0 left-0 bottom-[calc(50%+12px)] right-0">
           <UserCamera dashboard />
         </div>
-        <div className="rounded-lg overflow-hidden h-full">
+        <div className="rounded-lg overflow-hidden absolute bottom-0 top-[calc(50%+12px)] left-0  right-0">
           <MapView />
         </div>
       </div>
@@ -17,7 +17,7 @@ const UserDashboard = () => {
       <div className="flex flex-col gap-6">
         <UserNotifications dashboard />
 
-        <div className="h-3/10 bg-gray-light rounded-lg p-4">
+        <div className="h-[22%] bg-gray-light rounded-lg p-4">
           <h2 className="!text-3xl">Estadísticas</h2>
           <div className="inline-flex gap-6 mt-4">
             <div className="bg-white rounded-md inline-flex gap-3 py-2 px-3">

@@ -25,7 +25,7 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
     <div
       className={
         dashboard
-          ? "w-full bg-gray-light rounded-lg p-4 h-8/10"
+          ? "w-full bg-gray-light rounded-lg p-4 h-6/10 overflow-clip"
           : "w-8/10 mx-auto py-12"
       }
     >
@@ -34,7 +34,7 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
           Notificaciones
         </h2>
 
-        {data && (
+        {data && !dashboard && (
           <Paginator
             currentPage={data.number}
             totalPages={data.totalPages}
@@ -46,7 +46,8 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
         )}
       </div>
 
-      <div className="h-8/10">
+      <div className={`h-8/10 flex flex-col gap-4 mt-4 ${dashboard && "!gap-2 !mt-2"}`}>
+      
         {isLoading ? (
           <LoadingState />
         ) : (
@@ -68,6 +69,7 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
               message={notification.message}
               img={notification.photoUrl}
               date={notification.timestamp}
+              dashboard={dashboard}
             />
           ))}
       </div>

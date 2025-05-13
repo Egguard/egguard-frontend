@@ -129,7 +129,7 @@ const MapView = () => {
   return (
     <div className="size-full relative group">
       {/* loading and error div with map as blurred background */}
-      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center">
+      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center  rounded-lg overflow-clip">
         {isLoading ? (
           <LoadingState whiteText />
         ) : (
