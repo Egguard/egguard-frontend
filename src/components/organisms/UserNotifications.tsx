@@ -3,8 +3,17 @@ import Notification from "../molecules/Notification";
 import { useUserNotifications } from "../../lib/hooks/useUserNotifications";
 import { ErrorState, LoadingState } from "../atoms/States";
 import Paginator from "../atoms/Paginator";
+import { Link } from "react-router-dom";
+import { routes } from "@/routes/routes";
+import Views from "@/lib/types/SideBarViews";
 
-const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
+const UserNotifications = ({
+  dashboard,
+  setActiveView,
+}: {
+  setActiveView?: (view: Views) => void;
+  dashboard?: boolean;
+}) => {
   const [page, setPage] = useState(0);
   const [pageSize] = useState(5);
   const { data, isLoading, isError } = useUserNotifications(page, pageSize);
@@ -25,7 +34,7 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
     <div
       className={
         dashboard
-          ? "w-full bg-gray-light rounded-lg p-4 h-6/10 overflow-clip"
+          ? "w-full bg-gray-light rounded-lg p-4 h-6/10 overflow-clip relative"
           : "w-8/10 mx-auto py-12"
       }
     >
@@ -44,10 +53,17 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
             onNextPage={handleNextPage}
           />
         )}
+
+        {dashboard && setActiveView && (
+          <button className="bg-white border-2 border-black font-bold px-2 py-0.5 rounded-md" onClick={() => setActiveView && setActiveView(Views.notifications)}>Ver todas</button>
+        )}
       </div>
 
-      <div className={`h-8/10 flex flex-col gap-4 mt-4 ${dashboard && "!gap-2 !mt-2"}`}>
-      
+      <div
+        className={`h-8/10 flex flex-col gap-4 mt-4 ${
+          dashboard && "!gap-2 !mt-2"
+        }`}
+      >
         {isLoading ? (
           <LoadingState />
         ) : (
@@ -73,6 +89,9 @@ const UserNotifications = ({ dashboard }: { dashboard?: boolean }) => {
             />
           ))}
       </div>
+      {dashboard && (
+        <div className="absolute w-full h-20 left-0 bottom-0 bg-linear-to-t from-gray-light from-40% to-transparent"></div>
+      )}
     </div>
   );
 };

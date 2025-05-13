@@ -15,7 +15,7 @@ const UserContainer = () => {
       <UserSideBar activeView={activeView} setActiveView={setActiveView} />
 
 
-      {activeView === Views.dashboard && <UserDashboard />}
+      {activeView === Views.dashboard && <UserDashboard setActiveView={setActiveView} />}
       {activeView === Views.camera && <UserCamera />}
       {activeView === Views.control && <UserManualControl />}
       {activeView === Views.stats && <UnderConstruction noVolver />}

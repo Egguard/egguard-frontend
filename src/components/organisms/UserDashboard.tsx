@@ -1,8 +1,13 @@
+import Views from "@/lib/types/SideBarViews";
 import MapView from "./MapView";
 import UserCamera from "./UserCamera";
 import UserNotifications from "./UserNotifications";
 
-const UserDashboard = () => {
+const UserDashboard = ({
+  setActiveView,
+}: {
+  setActiveView: (view: Views) => void;
+}) => {
   return (
     <div className="grid grid-cols-2 gap-6 py-12 px-16 mx-auto">
       <div className="h-6/7 gap-6 flex flex-col relative">
@@ -15,7 +20,7 @@ const UserDashboard = () => {
       </div>
 
       <div className="flex flex-col gap-6">
-        <UserNotifications dashboard />
+        <UserNotifications setActiveView={setActiveView} dashboard />
 
         <div className="h-[22%] bg-gray-light rounded-lg p-4">
           <h2 className="!text-3xl">Estadísticas</h2>
