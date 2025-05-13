@@ -15,7 +15,7 @@ const CameraFeed = () => {
   return (
     <div className="absolute top-0 left-0 size-full -z-10" id="divCamera">
       {!isImageLoaded && (
-        <div className="flex items-center justify-center size-full bg-gray-200">
+        <div className="flex flex-col items-center justify-center size-full bg-gray-light">
           <LoadingState />
         </div>
       )}
