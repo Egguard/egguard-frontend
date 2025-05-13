@@ -127,9 +127,9 @@ const MapView = () => {
   const [legend, setLegend] = useState(false);
 
   return (
-    <div className="size-full relative group">
+    <div className="relative size-full rounded-2xl group">
       {/* loading and error div with map as blurred background */}
-      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center  rounded-lg overflow-clip">
+      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center  rounded-2xl overflow-clip">
         {isLoading ? (
           <LoadingState whiteText />
         ) : (
@@ -143,7 +143,7 @@ const MapView = () => {
       </div>
       <img
         src={"src/assets/images/map.png"}
-        className="size-full object-cover -z-10"
+        className="absolute inset-0 w-full h-full object-cover -z-10"
       />
 
       {!isLoading && eggs && robotPosition && (

@@ -34,7 +34,7 @@ const UserNotifications = ({
     <div
       className={
         dashboard
-          ? "w-full bg-gray-light rounded-lg p-4 h-6/10 overflow-clip relative"
+          ? "w-full bg-gray-light rounded-lg p-4 h-full overflow-clip relative"
           : "w-8/10 mx-auto py-12"
       }
     >

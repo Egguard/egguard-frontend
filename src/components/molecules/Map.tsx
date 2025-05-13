@@ -122,12 +122,12 @@ const Map = ({ eggs = [], robotPosition, className = '', mapImagePath = mapPath 
   };
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div className={`relative size-full ${className}`}>
       {/* Map background image */}
       <img 
         src={mapImagePath}
         alt="Farm Map"
-        className="size-full object-cover -z-10"
+        className="absolute inset-0 w-full h-full object-cover -z-10"
       />
         {/* Egg indicators */}
       {eggs
