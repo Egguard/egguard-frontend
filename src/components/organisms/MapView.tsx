@@ -101,13 +101,11 @@ const MapView = () => {
   }, [robotService]);
 
   useEffect(() => {
-    const controller = new AbortController();
     const fetchEggs = async () => {
       try {
         setIsLoading(true);
-        setError("Holaa");
         const today = new Date().toISOString().split("T")[0];
-        const data = await fetchEggsFromAPI(farmId, today, controller.signal);
+        const data = await fetchEggsFromAPI(farmId, today);
         setEggs(data);
       } catch (error) {
         console.error("Error fetching egg data:", error);
@@ -119,7 +117,6 @@ const MapView = () => {
     };
 
     fetchEggs();
-    return () => controller.abort();
   }, [farmId]);
 
   const brokenEggs = eggs.filter((e) => e.broken && !e.picked);
@@ -129,84 +126,24 @@ const MapView = () => {
   return (
     <div className="relative size-full rounded-2xl group">
       {/* loading and error div with map as blurred background */}
-      <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center  rounded-2xl overflow-clip">
-        {isLoading ? (
-          <LoadingState whiteText />
-        ) : (
-          error && (
-            <ErrorState
-              small
-              error={"No se han podido encontrar tus huevos."}
-            />
-          )
-        )}
-      </div>
-      <img
-        src={"src/assets/images/map.png"}
-        className="absolute inset-0 w-full h-full object-cover -z-10"
-      />
-
-      {!isLoading && eggs && robotPosition && (
-        <Map eggs={eggs} robotPosition={robotPosition} />
-      )}
-
-      {/* legend button */}
-      {!legend && (
-        <button
-          className="hidden absolute bottom-4 left-4 p-2 bg-gray-light rounded-md group-hover:block 
-      hover:cursor-pointer hover:brightness-110 active:scale-95 active:brightness-90"
-          onClick={() => setLegend(true)}
-        >
+      {isLoading && error && !eggs && (
+        <>
+          <div className="size-full bg-gray-dark/70 backdrop-blur-md absolute items-center  rounded-2xl overflow-clip">
+            {isLoading ? (
+              <LoadingState whiteText />
+            ) : (
+              error && <ErrorState small error={error} />
+            )}
+          </div>
           <img
-            className="size-8"
-            src="src/assets/icons/legend.svg"
-            alt="legend"
+            src={"src/assets/images/map.png"}
+            className="absolute inset-0 w-full h-full object-cover -z-10"
+            alt="Map background"
           />
-        </button>
+        </>
       )}
 
-      {/* legend */}
-      {legend && (
-        <div className="absolute w-full bottom-0 bg-gray-light py-2 px-4 inline-flex gap-4 justify-end">
-          <button
-            className="absolute left-2 bottom-1 size-8
-          hover:cursor-pointer hover:opacity-90 active:scale-95 active:opacity-100"
-            onClick={() => setLegend(false)}
-          >
-            <img src="src/assets/icons/close.svg" className=" " />
-          </button>
-          <div className="inline-flex gap-1">
-            <img
-              src="src/assets/icons/egg.svg"
-              alt="Normal Egg"
-              className="size-5 object-contain"
-            />
-            <span>Huevo normal</span>
-          </div>
-          <div className="inline-flex gap-1">
-            <img
-              src="src/assets/icons/broken-egg.svg"
-              alt="Broken Egg"
-              className="size-5 object-contain"
-            />
-            <span>Huevo roto</span>
-          </div>
-          <div className="inline-flex gap-1">
-            <img
-              src="/Logo.svg"
-              alt="Robot"
-              className="size-5 object-contain"
-            />
-            <span>Posicion robot</span>
-          </div>
-          {robotPosition && (
-            <div className="ml-auto text-xs text-gray-500">
-              Robot at ({robotPosition.x.toFixed(2)},{" "}
-              {robotPosition.y.toFixed(2)})
-            </div>
-          )}
-        </div>
-      )}
+      {!isLoading && !error && <Map eggs={eggs} robotPosition={robotPosition} />}
     </div>
   );
 };

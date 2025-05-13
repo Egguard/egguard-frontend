@@ -45,14 +45,15 @@ import { Egg } from '../lib/types/Egg';
  * @returns A Promise resolving to an array of Egg objects.
  * @throws If the API request fails.
  */
-export const fetchEggsFromAPI = async (farmId: number, date: string, signal?: AbortSignal): Promise<Egg[]> => {
+export const fetchEggsFromAPI = async (farmId: number, date: string): Promise<Egg[]> => {
   const url = `http://localhost:8080/api/v1/farms/${farmId}/eggs?picked=false&date=${date}`;
-  const response = await fetch(url, { signal });
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`API request failed with status ${response.status}`);
   }
 
   const data = await response.json();
+  console.log(data)
   return data;
 };

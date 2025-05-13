@@ -17,6 +17,7 @@ import {
 } from "../../lib/types/RosMessages";
 import CameraFeed from "../molecules/CameraFeed";
 import MapView from "./MapView";
+import { motion } from "framer-motion";
 
 const MODE_TOPIC = "/mode";
 const MODE_MESSAGE_TYPE = "egguard_custom_interfaces/msg/Mode";
@@ -119,12 +120,18 @@ const UserManualControl: React.FC = () => {
   return (
     <div className="size-full relative">
       <CameraFeed />
-      <div className="absolute top-4 right-4 border-4 border-white w-80 h-44 rounded-2xl overflow-clip">
+      <div className="absolute top-4 right-4 border-4 border-white w-2/8 h-3/10 rounded-2xl overflow-clip">
         <MapView />
       </div>
 
       {/* driving buttons container */}
-      <div className="h-full w-full p-6 pr-8 inline-flex items-end justify-between z-10">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+        className="h-full w-full p-6 pr-8 inline-flex items-end justify-between z-10"
+      >
         {/* turning buttons */}
         <div className="inline-flex gap-4 ">
           <button
@@ -154,21 +161,19 @@ const UserManualControl: React.FC = () => {
         </div>
 
         {/* speed slider  */}
-        <div className="">
-          <div className="flex flex-col items-center">
-            <input
-              type="range"
-              min="0"
-              max={SLIDER_VELOCITY_MAX}
-              value={SLIDER_VELOCITY_MAX - sliderValue}
-              onChange={handleSliderChange}
-              disabled={!isRosReady}
-              style={{ writingMode: "vertical-lr" }}
-              className="speed-slider disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
+        <div className="flex flex-col items-center">
+          <input
+            type="range"
+            min="0"
+            max={SLIDER_VELOCITY_MAX}
+            value={SLIDER_VELOCITY_MAX - sliderValue}
+            onChange={handleSliderChange}
+            disabled={!isRosReady}
+            style={{ writingMode: "vertical-lr" }}
+            className="speed-slider disabled:opacity-50 !disabled:cursor-not-allowed"
+          />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Paginator = (props: PaginatorProps) => {
         className={`px-1 py-1 rounded-lg  ${
           props.isFirstPage
             ? "bg-gray-200 cursor-not-allowed"
-            : "bg-primary hover:brightness-110 active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out"
+            : "bg-primary hover:brightness-110 hover:cursor-pointer active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out"
         }`}
       >
         <img className={`-scale-100  ${props.isFirstPage ? "opacity-50" : "invert"}`} src="/arrow.svg" alt="Anterior" />
@@ -31,7 +31,7 @@ const Paginator = (props: PaginatorProps) => {
         className={`px-1 py-1 rounded-lg ${
           props.isLastPage
             ? "bg-gray-200 cursor-not-allowed"
-            : "bg-primary hover:brightness-110 active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out"
+            : "bg-primary hover:brightness-110 hover:cursor-pointer active:brightness-90 active:scale-95 transition-all duration-150 ease-in-out"
         }`}
       ><img className={props.isLastPage ? "opacity-50" : "invert"} src="/arrow.svg" alt="Siguiente" /></button>
     </div>

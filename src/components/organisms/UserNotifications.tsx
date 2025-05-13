@@ -15,7 +15,7 @@ const UserNotifications = ({
   dashboard?: boolean;
 }) => {
   const [page, setPage] = useState(0);
-  const [pageSize] = useState(5);
+  const [pageSize] = useState(dashboard ? 4 : 5);
   const { data, isLoading, isError } = useUserNotifications(page, pageSize);
 
   const handlePreviousPage = () => {
@@ -44,7 +44,7 @@ const UserNotifications = ({
         </h2>
 
         {data && !dashboard && (
-          <Paginator
+        <Paginator
             currentPage={data.number}
             totalPages={data.totalPages}
             isFirstPage={data.first}
@@ -55,7 +55,13 @@ const UserNotifications = ({
         )}
 
         {dashboard && setActiveView && (
-          <button className="bg-white border-2 border-black font-bold px-2 py-0.5 rounded-md" onClick={() => setActiveView && setActiveView(Views.notifications)}>Ver todas</button>
+          <button
+            className="bg-white border-2 border-black font-bold px-2 py-0.5 rounded-md 
+          hover:bg-white/50 hover:brightness-110 hover:cursor-pointer active:scale-95 active:brightness-90"
+            onClick={() => setActiveView && setActiveView(Views.notifications)}
+          >
+            Ver todas
+          </button>
         )}
       </div>
 

@@ -3,6 +3,7 @@ import ShutterButton from "../atoms/ShutterButton";
 import CameraFeed from "../molecules/CameraFeed";
 import Gallery from "../molecules/Gallery";
 import MapView from "./MapView";
+import { motion } from "framer-motion";
 
 const UserCamera = ({ dashboard }: { dashboard?: boolean }) => {
   const [images, setImages] = useState<string[]>([]);
@@ -24,10 +25,16 @@ const UserCamera = ({ dashboard }: { dashboard?: boolean }) => {
       <CameraFeed />
 
       {!dashboard && (
-        <div className="inline-flex absolute size-full bottom-0 left-0 items-end justify-between p-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="inline-flex absolute size-full bottom-0 left-0 items-end justify-between p-6"
+        >
           <Gallery images={images} />
           <ShutterButton onCapture={handleCapture} />
-        </div>
+        </motion.div>
       )}
     </div>
   );
