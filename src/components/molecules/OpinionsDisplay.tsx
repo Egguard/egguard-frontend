@@ -29,12 +29,12 @@ const OpinionsDisplay = ({ activeOpinion }: OpinionsDisplayProps) => {
     <div className="w-5/10 h-70 shadow-xl bg-white rounded-2xl p-8 pb-6 flex flex-col justify-between">
       <div>
         <label className="opinion-label">la voz del campo</label>
-        <p className="text-[24px] font-semibold w-[36ch]">“{currentOpinion.text}”</p>
+        <span className="text-[24px] font-semibold w-[36ch]">“{currentOpinion.text}”</span>
       </div>
 
       <p className="text-xl font-medium flex flex-col gap-0">
         {currentOpinion.name}
-        <p className="text-lg text-black/70">Granjero de {currentOpinion.location}</p>
+        <span className="text-lg text-black/70">Granjero de {currentOpinion.location}</span>
       </p>
     </div>
   );

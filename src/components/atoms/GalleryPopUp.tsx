@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 interface GalleryPopUpProps {
   togglePopup: () => void;
   images: string[];
@@ -14,7 +16,13 @@ const GalleryPopUp = ({ togglePopup, images }: GalleryPopUpProps) => {
   };
 
   return (
-    <div className="bg-black/40 size-full flex justify-center items-center absolute inset-0 z-100">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-black/40 size-full flex justify-center items-center absolute inset-0 z-100"
+    >
       <div className="bg-white size-3/4 rounded-2xl py-4 px-8">
         <div className="inline-flex justify-between align-middle w-full">
           <h3>Galería</h3>
@@ -31,7 +39,11 @@ const GalleryPopUp = ({ togglePopup, images }: GalleryPopUpProps) => {
             return (
               <div
                 key={index}
-                className="w-full h-28 bg-gray-light rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+                className={`w-full h-28 bg-gray-light rounded-lg flex items-center justify-center overflow-hidden 
+                ${
+                  img &&
+                  "hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out active:scale-95 active:brightness-90"
+                }`}
                 onClick={() => img && handleDownload(img, index)}
               >
                 {img ? (
@@ -41,14 +53,18 @@ const GalleryPopUp = ({ togglePopup, images }: GalleryPopUpProps) => {
                     className="object-cover size-full "
                   />
                 ) : (
-                  <img src="/default-img.jpg" className="object-cover size-full" />
+                  <img
+                    draggable='false'
+                    src="/default-img.jpg"
+                    className="object-cover size-full"
+                  />
                 )}
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

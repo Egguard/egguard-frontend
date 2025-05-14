@@ -56,17 +56,6 @@ const UserSideBar = ({ activeView, setActiveView }: UserSideBarProps) => {
         </SideBarButton>
 
         <SideBarButton
-          onClick={() => setActiveView(Views.stats)}
-          active={activeView === Views.stats}
-        >
-          <ChartBar
-            color={activeView === Views.stats ? activeColor : inactiveColor}
-            size={36}
-            className="transition-colors duration-300 ease-in"
-          />
-        </SideBarButton>
-
-        <SideBarButton
           onClick={() => setActiveView(Views.notifications)}
           active={activeView === Views.notifications}
         >

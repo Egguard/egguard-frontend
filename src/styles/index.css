@@ -101,7 +101,7 @@ label {
 .speed-slider {
   -webkit-appearance: none;
   appearance: none;
-  @apply w-10 h-64 rounded-lg appearance-none cursor-pointer bg-gradient-to-t from-white to-primary;
+  @apply w-10 h-64 rounded-lg appearance-none disabled:cursor-not-allowed cursor-pointer bg-gradient-to-t from-white to-primary;
   box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4); /* Simula un outline */
 }
 

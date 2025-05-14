@@ -15,7 +15,9 @@ const ShutterButton = ({ onCapture }: ShutterButtonProps) => {
   return (
     <button
       onClick={handleClick}
-      className="size-20 rounded-full bg-white outline-8 outline-white/40"
+      className="size-20 rounded-full bg-white outline-8 outline-white/40 
+      hover:brightness-110 hover:cursor-pointer hover:scale-110 
+      active:brightness-90 active:scale-95 ease-in-out transition-all duration-300"
     ></button>
   );
 };
