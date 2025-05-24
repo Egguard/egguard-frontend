@@ -1,6 +1,6 @@
 # Egguard Frontend
 
-## Prerequisites
+## Prerequisite
 - Node.js (v18 or newer recommended)
 - npm (v9 or newer recommended)
 
@@ -17,6 +17,26 @@ cd egguard-frontend
 
 ```shellscript
 npm install
+npm install tailwindcss @tailwindcss/vite
+npm install -D postcss
+```
+
+### 3. PostCSS configuration
+Create the file `postcss.config.mjs` at the root of your project:
+```js
+export default {
+  plugins: {
+    tailwindcss: {},
+  },
+}
+```
+
+```shellscript
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
 ```
 
 ### 3. Start the development server
