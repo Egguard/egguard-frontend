@@ -1,4 +1,4 @@
-import { PaginatedResponse, UserNotification } from "@/lib/types/apiTypes";
+import { PaginatedResponse, UserNotification, UserStats } from "@/lib/types/apiTypes";
 
 const API_BASE_URL = "http://localhost:8080";
 const FARM_ID = 1;
@@ -32,7 +32,28 @@ export const getUserNotifications = async (
     throw new Error("Error fetching user notifications");
   }
 };
-// src/api/eggAPI.ts
+
+export const getUserStats = async (): Promise<UserStats> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/v1/farms/${FARM_ID}/stats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type:': 'application/json',
+      },
+    });
+  
+    const data = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(data.message || 'Error fetching user stats');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Get user stats error: ', error);
+    throw new Error('Error fetching user stats');
+  }
+};
 
 import { Egg } from '../lib/types/Egg';
 
