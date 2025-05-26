@@ -11,7 +11,7 @@ export interface PaginatedResponse<T> {
       unsorted: boolean;
       sorted: boolean;
       empty: boolean;
-    }
+    };
   };
   size: number;
   content: T[];
@@ -28,16 +28,23 @@ export interface PaginatedResponse<T> {
 }
 
 export interface UserNotification {
-    id: number,
-    farmId: number,
-    severity: NotificationSeverity;
-    message: string;
-    photoUrl: string;
-    timestamp: string;
+  id: number;
+  farmId: number;
+  severity: NotificationSeverity;
+  message: string;
+  photoUrl: string;
+  timestamp: string;
 }
 
 export enum NotificationSeverity {
-    CRITICAL = "CRITICAL",
-    WARNING = "WARNING",
-    INFO = "INFO"
+  CRITICAL = "CRITICAL",
+  WARNING = "WARNING",
+  INFO = "INFO",
+}
+
+export interface UserStats {
+  totalPickedEggs: number;
+  averageNotBrokenEggsPickedPerDay: number;
+  averageBrokenEggsPickedPerDay: number;
+  brokenEggsPercentage: number;
 }
