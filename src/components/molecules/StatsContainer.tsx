@@ -7,7 +7,7 @@ const StatsContainer = () => {
   const { data, isLoading, isError } = useUserStats();
 
   return (
-    <div className="inline-flex gap-4 pt-4 justify-center w-full">
+    <div className="inline-flex gap-4 pt-4 px-4 justify-center w-full">
       {isLoading ? (
         <LoadingState />
       ) : isError ? (
