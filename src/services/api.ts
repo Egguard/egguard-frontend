@@ -1,6 +1,6 @@
 import { PaginatedResponse, UserNotification, UserStats } from "@/lib/types/apiTypes";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "http://localhost:8081";
 const FARM_ID = 1;
 
 // API calls
@@ -38,12 +38,13 @@ export const getUserStats = async (): Promise<UserStats> => {
     const response = await fetch(`${API_BASE_URL}/api/v1/farms/${FARM_ID}/stats`, {
       method: 'GET',
       headers: {
-        'Content-Type:': 'application/json',
+        'Content-Type': 'application/json',
       },
     });
   
     const data = await response.json();
-  
+    console.log("getUserStats: ", data);
+
     if (!response.ok) {
       throw new Error(data.message || 'Error fetching user stats');
     }
