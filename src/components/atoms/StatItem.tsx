@@ -25,7 +25,7 @@ const StatItem = (props: StatItemInterface) => {
 
       <div>
         <p className="text-3xl font-bold">
-          {props.value}
+          {Math.round(props.value)}
           {props.percentage && (
             <span className="text-xl font-bold text-black/70">%</span>
           )}
